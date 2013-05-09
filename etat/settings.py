@@ -92,7 +92,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 )
 
 INSTALLED_APPS = (
-    'bootstrap_admin',
+    'suit',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -108,3 +108,7 @@ INSTALLED_APPS = (
 
     'etat',
 )
+
+SUIT_CONFIG = {
+    'ADMIN_NAME': 'Etat Admin'
+}

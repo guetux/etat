@@ -56,3 +56,36 @@ table {
 .image.left { margin: 0 10px 10px 28px; }
 
 .image.right { margin: 0 28px 10px 10px; }
+
+/* main styles */
+
+h1, h2, h3 {
+    font-family: Roboto Slab;
+}
+
+body {
+    padding-top: 60px;
+}
+
+/* design stuff */
+
+.logo-small {
+    background-image: url('../img/logo-small.png');
+    width: 25px;
+    height: 30px;
+    margin-right: 5px;
+    float: left;
+    display: inline-block;
+}
+
+/* bootstrap theming */
+
+.navbar .brand {
+    padding: 5px 20px 5px 0px;
+    margin-left: 0;
+    line-height: 30px;
+    font-family: Arvo;
+    font-weight: bold;
+}
+
+
