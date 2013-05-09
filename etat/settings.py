@@ -105,8 +105,13 @@ INSTALLED_APPS = (
     'raven.contrib.django.raven_compat',
     'storages',
     'south',
+    'mptt',
+    'django_reset',
+    'django_countries',
 
     'etat',
+    'etat.departments',
+    'etat.members',
 )
 
 SUIT_CONFIG = {
