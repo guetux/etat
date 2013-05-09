@@ -1,0 +1,23 @@
+{% load i18n feincms_tags feincms_page_tags %}
+{% load url from future %}
+
+<!doctype html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="utf-8">
+    <meta name="robots" content="index,follow,noodp">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" type="text/css">
+
+    <title>{% block title %}ETAT{% endblock %}</title>
+    {% block extra-head %}{% endblock %}
+</head>
+
+<body>
+    <h1>ETAT</h1>
+
+    <script type="text/javascript" src="{{ STATIC_URL }}lib/jquery-1.9.1.min.js"></script>
+    {% block javascript %}{% endblock %}
+</body>
+</html>

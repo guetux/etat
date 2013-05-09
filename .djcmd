@@ -1,0 +1,7 @@
+[commands]
+cs=collectstatic --noinput
+r=runserver
+sh=shell
+
+m=migrate
+sma=schemamigration --auto

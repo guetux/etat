@@ -1,0 +1,85 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_static %}
+{% load url from future %}
+
+{% block bodyclass %}login{% endblock %}
+
+{% block nav-global %}{% endblock %}
+
+{% block content_title %}{% endblock %}
+
+{% block breadcrumbs %}{% endblock %}
+
+{% block content %}
+
+  <form method="post" class="form-signin">
+    <h2 class="form-signin-heading">{% trans "etat admin login" %}</h2>
+
+    {% csrf_token %}
+
+    {% if form.non_field_errors %}
+        <div class="alert alert-error">
+            {% for non_field_error in form.non_field_errors %}
+                 {{ non_field_error }}
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="control-group required {% if form.username.errors %} error{% endif %}">
+      <input type="text" name="username" placeholder="username" value="{{ form.username.value }}" class="input-block-level">
+
+      {% for error in form.username.errors %}
+          <span class="help-inline">{{ error }}</span>
+      {% endfor %}
+    </div>
+
+    <div class="control-group required {% if form.password.errors %} error{% endif %}">
+      <input type="password" name="password" placeholder="password" class="input-block-level">
+
+      {% for error in form.password.errors %}
+          <span class="help-inline">{{ error }}</span>
+      {% endfor %}
+    </div>
+
+    <input type="hidden" name="this_is_the_login_form" value="1" />
+    <input type="hidden" name="next" value="{{ next }}" />
+
+    <button type="submit" class="btn btn-large btn-primary input-block-level">
+      {% trans "Log in" %}
+    </button>
+  </form>
+
+<script type="text/javascript">
+document.getElementById('id_username').focus()
+</script>
+
+<style type="text/css">
+body { background: #eee; }
+h2 { text-align: center; }
+
+.form-signin {
+    max-width: 300px;
+    padding: 19px 29px 29px;
+    margin: 0 auto 20px;
+    background-color: #fff;
+    border: 1px solid #e5e5e5;
+    -webkit-border-radius: 5px;
+       -moz-border-radius: 5px;
+            border-radius: 5px;
+    -webkit-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+       -moz-box-shadow: 0 1px 2px rgba(0,0,0,.05);
+            box-shadow: 0 1px 2px rgba(0,0,0,.05);
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+    margin-bottom: 10px;
+}
+.form-signin input[type="text"],
+.form-signin input[type="password"] {
+    font-size: 16px;
+    height: auto;
+    margin-bottom: 15px;
+    padding: 7px 9px;
+}
+</style>
+{% endblock %}
