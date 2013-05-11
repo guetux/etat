@@ -12,15 +12,28 @@ class AddressAdminInline(admin.StackedInline):
 
 class RoleAdminInline(admin.TabularInline):
     model = models.Role
-    raw_id_fields = ('department',)
+    raw_id_fields = ('department', 'type')
     extra = 0
 
 
 class MemberAdmin(admin.ModelAdmin):
+    list_display = ('scout_name', 'first_name', 'last_name')
+
     inlines = [
         RoleAdminInline,
         AddressAdminInline,
     ]
+
+    fieldsets = (
+        (None, {
+            'fields': ('scout_name', 'first_name', 'last_name', 'portrait',
+                'gender', 'birthday', 'mobile', 'phone')
+        }),
+        ('Notes', {
+            'classes': ('collapse',),
+            'fields': ('notes',),
+        }),
+    )
 
 
 class RoleTypeAdmin(SortableModelAdmin):

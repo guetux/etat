@@ -1,0 +1,90 @@
+{% extends "base_sidebar.html" %}
+{% load i18n mptt_tags %}
+
+{% block javascript %}
+  <script src="{{ STATIC_URL }}js/members.js"></script>
+{% endblock %}
+
+{% block sidebar %}
+  <div class="well well-small">
+    <h3>{% trans "Departments" %}</h3>
+    <div id="department_tree" class="space">
+      <ul>
+      {% recursetree departments %}
+        <li id="{{ node.id }}">
+          <a href="?d={{ node.id }}">
+            <i class="icon-group"></i>
+            {{ node.name }}
+          </a>
+          {% if not node.is_leaf_node %}
+            <ul>
+              {{ children }}
+            </ul>
+          {% endif %}
+        </li>
+      {% endrecursetree %}
+      </ul>
+    </div>
+
+    <div class="clearfix space">
+        <span>{% trans "Deep selector" %}</span>
+        <div  id="checkselector"  class="switch switch-mini pull-right">
+          <input type="checkbox" />
+        </div>
+    </div>
+
+    <h3>
+      <a href="#" data-toggle="collapse" data-target="#filters">
+        {% trans "Advanced Filters" %}
+        <i class="icon-caret-down pull-right"></i>
+      </a>
+    </h3>
+    <div id="filters" class="collapse in">
+      <label for="roles">{% trans "Roles" %}</label>
+      <select id="roles-filter" name="roles" class="input-block-level" multiple>
+        {% for role in roles %}
+          <option value="{{ role.id }}">{{ role }}</option>
+        {% endfor %}
+      </select>
+
+      <div class="clearfix space">
+        <span>{% trans "Inactive Roles" %}</span>
+        <div id="inactive-switch" class="switch switch-mini pull-right">
+          <input id="inactive-filter" name="inactive" type="checkbox" />
+        </div>
+      </div>
+
+      <label for="gender">{% trans "Gender" %}</label>
+      <select id="gender-filter" name="gender" class="input-block-level">
+        <option value="">{% trans "Both" %}</option>
+        <option value="f">{% trans "Female" %}</option>
+        <option value="m">{% trans "Male" %}</option>
+      </select>
+    </div>
+
+  </div>
+{% endblock %}
+
+
+{% block content %}
+
+  <table id="members_table" class="table table-striped">
+    <thead>
+    <tr>
+      <th>{% trans "Scout name" %}</th>
+      <th>{% trans "First name" %}</th>
+      <th>{% trans "Last name" %}</th>
+    </tr>
+    </thead>
+    <tbody>
+<!--     {% for m in members %}
+      <tr>
+        <td>{{ m.first_name }}</td>
+        <td>{{ m.last_name }}</td>
+        <td>{{ m.scout_name }}</td>
+      </tr>
+    {% endfor %} -->
+    </tbody>
+  </table>
+
+{% endblock %}

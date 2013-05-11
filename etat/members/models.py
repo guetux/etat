@@ -7,13 +7,13 @@ from django_countries import CountryField
 
 class Member(models.Model):
     GENDER_CHOICES = (
-        ('m', _('male')),
         ('f', _('female')),
+        ('m', _('male')),
     )
 
+    scout_name = models.CharField(_('scout name'), max_length=100, blank=True)
     first_name = models.CharField(_('first name'), max_length=100)
     last_name = models.CharField(_('last name'), max_length=100)
-    scout_name = models.CharField(_('scout name'), max_length=100, blank=True)
 
     portrait = models.ImageField(_('portrait'), upload_to='members',
         null=True, blank=True)
@@ -26,8 +26,8 @@ class Member(models.Model):
 
     notes = models.TextField(_('notes'), blank=True)
 
-    roles = models.ManyToManyField('departments.Department',
-        through='Role', related_name='roles')
+    departments = models.ManyToManyField('departments.Department',
+        through='Role', related_name='members')
 
     class Meta:
         verbose_name = _('Member')
@@ -56,7 +56,7 @@ class RoleType(models.Model):
 
 
 class Role(models.Model):
-    member = models.ForeignKey(Member)
+    member = models.ForeignKey(Member, related_name='roles')
     department = models.ForeignKey('departments.Department')
     type = models.ForeignKey(RoleType)
 
