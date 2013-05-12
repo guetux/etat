@@ -1,5 +1,8 @@
 
-
+// Global members list
+ml = new List('member-list', {
+    valueNames: ['first_name', 'last_name', 'scout_name']
+});
 
 function load_members() {
     // Reload members for selected departments
@@ -26,18 +29,14 @@ function load_members() {
     data['gender'] = $('#gender-filter').val();
     data['inactive'] = $('#inactive-filter').is(':checked');
 
-    var tbl = $('#members_table').dataTable();
-
     $.ajax({
         dataType: 'json',
         type: 'GET',
         url: 'data/',
         data: data,
         success: function (data) {
-            tbl.fnClearTable();
-            tbl.fnAddData(data);
-            tbl.fnDraw();
-            //console.log(data);
+            ml.clear()
+            ml.add(data);
         }
     });
 }
@@ -71,21 +70,6 @@ $(function () {
             deptree.uncheck_all();
             deptree.hide_checkboxes();
             load_members();
-        }
-    });
-
-    // datatable for members
-    $.extend( $.fn.dataTableExt.oStdClasses, {
-        "sWrapper": "dataTables_wrapper form-inline"
-    } );
-
-    $('#members_table').dataTable({
-        sDom: "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
-        //"sPaginationType": "bootstrap",
-        bPaginate: false,
-        bInfo: false,
-        oLanguage: {
-          sEmptyTable: 'Nobody has a role in this department yet',
         }
     });
 

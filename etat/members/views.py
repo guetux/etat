@@ -1,6 +1,7 @@
 import json
 
 from django.db.models import Q
+from django.core.serializers.json import DjangoJSONEncoder
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils.timezone import now
@@ -35,7 +36,6 @@ def members_data(request):
         filter_args.append(Q(gender=gender))
 
     inactive = request.GET.get('inactive', False)
-    print inactive
     if inactive == 'false':
         filter_args.append(
             Q(roles__end__isnull=True) |
@@ -44,12 +44,14 @@ def members_data(request):
 
     members = Member.objects.filter(*filter_args)
 
-    member_data = members.distinct().values_list(
+    member_data = members.distinct().values(
         'scout_name',
         'first_name',
         'last_name',
     )
+
+    print member_data
     return HttpResponse(
-        json.dumps([list(m) for m in member_data]),
+        json.dumps(list(member_data), cls=DjangoJSONEncoder),
         mimetype="application/json"
     )

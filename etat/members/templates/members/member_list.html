@@ -67,24 +67,25 @@
 
 
 {% block content %}
-
-  <table id="members_table" class="table table-striped">
-    <thead>
-    <tr>
-      <th>{% trans "Scout name" %}</th>
-      <th>{% trans "First name" %}</th>
-      <th>{% trans "Last name" %}</th>
-    </tr>
-    </thead>
-    <tbody>
-<!--     {% for m in members %}
-      <tr>
-        <td>{{ m.first_name }}</td>
-        <td>{{ m.last_name }}</td>
-        <td>{{ m.scout_name }}</td>
-      </tr>
-    {% endfor %} -->
-    </tbody>
-  </table>
-
+  <div id="member-list">
+      <form class="form-inline clearfix">
+        <input type="text" class="search pull-right" placeholder="{% trans 'search' %}" />
+      </form>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="sort" data-sort="scout_name">{% trans 'scout name' %}</th>
+            <th class="sort" data-sort="first_name">{% trans 'first name' %}</th>
+            <th class="sort" data-sort="last_name">{% trans 'last name' %}</th>
+          </tr>
+        </thead>
+        <tbody class="list">
+          <tr>
+              <td class="scout_name"></td>
+              <td class="first_name"></td>
+              <td class="last_name"></td>
+          </tr>
+        </tbody>
+      </table>
+  </div>
 {% endblock %}
