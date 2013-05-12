@@ -8,7 +8,7 @@
 {% block sidebar %}
   <div class="well well-small">
     <h3>{% trans "Departments" %}</h3>
-    <div id="department_tree" class="space">
+    <div id="department_tree" class="space scrollbox">
       <ul>
       {% recursetree departments %}
         <li id="{{ node.id }}">
@@ -77,15 +77,22 @@
             <th class="sort" data-sort="scout_name">{% trans 'scout name' %}</th>
             <th class="sort" data-sort="first_name">{% trans 'first name' %}</th>
             <th class="sort" data-sort="last_name">{% trans 'last name' %}</th>
+            <th></th>
           </tr>
         </thead>
         <tbody class="list">
           <tr>
+              <td class="id hidden"></td>
               <td class="scout_name"></td>
               <td class="first_name"></td>
               <td class="last_name"></td>
+              <td><button class="btn">Edit</td>
           </tr>
         </tbody>
       </table>
+
+      <div id="empty-msg" class="alert">
+        {% trans "Empty department." %}
+      </div>
   </div>
 {% endblock %}

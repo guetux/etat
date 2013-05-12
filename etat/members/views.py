@@ -45,6 +45,7 @@ def members_data(request):
     members = Member.objects.filter(*filter_args)
 
     member_data = members.distinct().values(
+        'id',
         'scout_name',
         'first_name',
         'last_name',

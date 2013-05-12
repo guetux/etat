@@ -4,6 +4,7 @@
 .clear { clear:both; }
 .hidden { display:none; }
 .space { margin-bottom: 10px;}
+.scrollbox { overflow: auto };
 
 /* main styles */
 
@@ -24,6 +25,8 @@ h1 a, h2 a, h3 a {
 h1 a:hover, h2 a:hover, h3 a:hover {
     text-decoration: none;
 }
+
+
 
 .sort {
     position: relative;
