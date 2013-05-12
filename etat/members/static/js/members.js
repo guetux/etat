@@ -35,8 +35,11 @@ function load_members() {
         url: 'data/',
         data: data,
         success: function (data) {
-            ml.clear()
+            ml.clear();
             ml.add(data);
+            ml.search();
+            ml.sort('scout_name', { asc: true });
+            $('#member-list').find('.search').val('');
         }
     });
 }
