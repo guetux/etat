@@ -1,0 +1,22 @@
+{
+  "name": "etat",
+  "version": "0.1",
+  "homepage": "https://github.com/guetux/etat",
+  "authors": [
+    "Stefan Reinhard <sr@feinheit.ch>"
+  ],
+  "private": true,
+  "dependencies": {
+    "backbone": "~1.0.0",
+    "bootstrap": "~3.0.0",
+    "jquery": "~2.0.3",
+    "pines-notify": "~1.2.0",
+    "jquery.cookie": "~1.4.0",
+    "bootstrap-switch": "*",
+    "jquery-form": "~3.37.0",
+    "listjs": "~0.2.1",
+    "jquery.hotkeys": "*",
+    "Font-Awesome": "https://github.com/FortAwesome/Font-Awesome",
+    "jstree-dist": "*"
+  }
+}

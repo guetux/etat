@@ -1,0 +1,14 @@
+{
+  "name": "jquery.hotkeys",
+  "homepage": "https://github.com/tzuryby/jquery.hotkeys",
+  "_release": "2d51e3a9b1",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "2d51e3a9b1876c4ddcf05b35bd8d93163e740a1b"
+  },
+  "_source": "git://github.com/tzuryby/jquery.hotkeys.git",
+  "_target": "*",
+  "_originalSource": "jquery.hotkeys",
+  "_direct": true
+}
