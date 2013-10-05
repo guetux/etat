@@ -7,8 +7,8 @@ ml = new List('member-list', {
 function load_members() {
     // Reload members for selected departments
     var deptree = jQuery.jstree._reference('#department_tree');
-    var ids = []
-    data = {}
+    var ids = [];
+    data = {};
 
     // Use checked departmens if checkbox is enabled
     $.each(deptree.get_checked(null, true), function (i, e) {
@@ -16,7 +16,7 @@ function load_members() {
     });
 
     // Use selection if no checkbox is set
-    if (ids.length == 0) {
+    if (ids.length === 0) {
         $.each(deptree.get_selected(), function (i, e) {
             ids.push(parseInt(e.id));
         });
@@ -44,7 +44,7 @@ function load_members() {
             }
             ml.search();
             ml.sort('scout_name', { asc: true });
-            $('#member-list').find('.search').val('');
+            $('#member-list').find('input[type=search]').val('');
         }
     });
 }

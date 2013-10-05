@@ -28,7 +28,7 @@
 
     <div class="clearfix space">
         <span>{% trans "Deep selector" %}</span>
-        <div  id="checkselector"  class="switch switch-mini pull-right">
+        <div  id="checkselector"  class="make-switch switch-mini pull-right">
           <input type="checkbox" />
         </div>
     </div>
@@ -39,9 +39,9 @@
         <i class="icon-caret-down pull-right"></i>
       </a>
     </h3>
-    <div id="filters" class="collapse in">
+    <div id="filters" class="form-inline collapse in">
       <label for="roles">{% trans "Roles" %}</label>
-      <select id="roles-filter" name="roles" class="input-block-level" multiple>
+      <select id="roles-filter" name="roles" class="form-control space" multiple>
         {% for role in roles %}
           <option value="{{ role.id }}">{{ role }}</option>
         {% endfor %}
@@ -49,13 +49,13 @@
 
       <div class="clearfix space">
         <span>{% trans "Inactive Roles" %}</span>
-        <div id="inactive-switch" class="switch switch-mini pull-right">
+        <div id="inactive-switch" class="make-switch switch-mini pull-right">
           <input id="inactive-filter" name="inactive" type="checkbox" />
         </div>
       </div>
 
       <label for="gender">{% trans "Gender" %}</label>
-      <select id="gender-filter" name="gender" class="input-block-level">
+      <select id="gender-filter" name="gender" class="form-control" class="input-block-level">
         <option value="">{% trans "Both" %}</option>
         <option value="f">{% trans "Female" %}</option>
         <option value="m">{% trans "Male" %}</option>
@@ -68,9 +68,11 @@
 
 {% block content %}
   <div id="member-list">
-      <form class="form-inline clearfix">
-        <input type="text" class="search pull-right" placeholder="{% trans 'search' %}" />
-      </form>
+      <div class="row">
+        <div class="col-lg-4 col-lg-offset-8">
+          <input type="search" class="search form-control" placeholder="{% trans 'search' %}" />
+        </div>
+      </div>
       <table class="table table-striped">
         <thead>
           <tr>

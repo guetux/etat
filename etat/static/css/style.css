@@ -4,9 +4,13 @@
 .clear { clear:both; }
 .hidden { display:none; }
 .space { margin-bottom: 10px;}
-.scrollbox { overflow: auto };
+.scrollbox { overflow: auto; }
 
 /* main styles */
+
+body {
+    padding-top: 60px;
+}
 
 h1, h2, h3 {
     font-family: Roboto Slab;
@@ -25,8 +29,6 @@ h1 a, h2 a, h3 a {
 h1 a:hover, h2 a:hover, h3 a:hover {
     text-decoration: none;
 }
-
-
 
 .sort {
     position: relative;
@@ -58,7 +60,12 @@ body {
     height: 30px;
     margin-right: 5px;
     float: left;
-    display: inline-block;
+    display: block;
+}
+
+.jstree-apple,
+.jstree-apple > ul {
+    background: none !important;
 }
 
 /* bootstrap theming */
@@ -69,12 +76,21 @@ body {
     }
 }
 
-.navbar .brand {
+.navbar {
+    min-height: 40px;
+}
+
+.navbar .navbar-brand {
     padding: 5px 20px 5px 0px;
     margin-left: 0;
     line-height: 30px;
     font-family: Arvo;
     font-weight: bold;
+}
+
+.navbar-nav > li > a {
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 

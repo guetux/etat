@@ -9,16 +9,13 @@
 
   <title>ETAT</title>
 
-  <link href="{{ STATIC_URL }}lib/bootstrap/css/bootstrap.css" rel="stylesheet">
-  <style> body { padding-top: 60px; } </style>
-  <link href="{{ STATIC_URL }}lib/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-  <link href="{{ STATIC_URL }}lib/fontawesome/css/font-awesome.css" rel="stylesheet">
-  <link href="{{ STATIC_URL }}lib/switch/css/bootstrapSwitch.css" rel="stylesheet">
-  <link href="{{ STATIC_URL }}lib/pines/jquery.pnotify.default.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="{{ STATIC_URL }}libs/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}libs/bootstrap-switch/static/stylesheets/bootstrap-switch.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}libs/font-awesome/css/font-awesome.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}libs/pines-notify/jquery.pnotify.default.css"/>
 
   <link href='http://fonts.googleapis.com/css?family=Arvo:400,700|Roboto+Slab:400,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="{{ STATIC_URL }}css/style.css" type="text/css">
-
   {% block extra-head %}{% endblock %}
 </head>
 
@@ -27,12 +24,12 @@
     {% block navbar %}
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="navbar-inner">
-        <div class="container-fluid">
-          <a class="brand" href="/">
+        <div class="container">
+          <a class="navbar-brand" href="/">
               <i class="logo-small"></i>
               {% trans "ETAT" %}
           </a>
-          <ul class="nav">
+          <ul class="nav navbar-nav">
             {% block nav %}
             <li>
                 <a href="{% url 'members_list' %}">
@@ -41,7 +38,7 @@
             </li>
             {% endblock %}
           </ul>
-          <ul class="nav pull-right">
+          <ul class="nav navbar-nav pull-right">
             {% if request.user.is_superuser %}
             <li>
               <a href="/admin/">
@@ -76,17 +73,16 @@
     {% endblock container %}
   {% endblock body %}
 
-  <script src="{{ STATIC_URL }}lib/jquery-1.9.1.min.js"></script>
-  <script src="{{ STATIC_URL }}lib/jquery.form.js"></script>
-  <script src="{{ STATIC_URL }}lib/jquery.hotkeys.js"></script>
-  <script src="{{ STATIC_URL }}lib/jquery.cookie.js"></script>
-  <script src="{{ STATIC_URL }}lib/bootstrap/js/bootstrap.js"></script>
-  <script src="{{ STATIC_URL }}lib/switch/js/bootstrapSwitch.js"></script>
-  <script src="{{ STATIC_URL }}lib/pines/jquery.pnotify.min.js"></script>
-  <script src="{{ STATIC_URL }}lib/jstree/jquery.jstree.js"></script>
-  <script src="{{ STATIC_URL }}lib/list.min.js"></script>
-  <script src="{{ STATIC_URL }}js/global.js"></script>
+  <script src="{{ STATIC_URL }}libs/jquery/jquery.js"></script>
+  <script src="{{ STATIC_URL }}libs/jquery-form/jquery.form.js"></script>
+  <script src="{{ STATIC_URL }}libs/jquery.cookie/jquery.cookie.js"></script>
+  <script src="{{ STATIC_URL }}libs/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="{{ STATIC_URL }}libs/bootstrap-switch/static/js/bootstrap-switch.js"></script>
+  <script src="{{ STATIC_URL }}libs/pines-notify/jquery.pnotify.js"></script>
+  <script src="{{ STATIC_URL }}libs/jstree-dist/jquery.jstree.js"></script>
+  <script src="{{ STATIC_URL }}libs/listjs/src/list.js"></script>
 
+  <script src="{{ STATIC_URL }}js/global.js"></script>
   {% block javascript %}{% endblock %}
 </body>
 </html>
