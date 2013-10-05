@@ -35,12 +35,10 @@
 
     <h3>
       <a href="#" data-toggle="collapse" data-target="#filters">
-        {% trans "Advanced Filters" %}
-        <i class="icon-caret-down pull-right"></i>
+        {% trans "Roles" %}
       </a>
     </h3>
-    <div id="filters" class="form-inline collapse in">
-      <label for="roles">{% trans "Roles" %}</label>
+    <div id="filters" class="form-inline collapse">
       <select id="roles-filter" name="roles" class="form-control space" multiple>
         {% for role in roles %}
           <option value="{{ role.id }}">{{ role }}</option>
@@ -48,18 +46,11 @@
       </select>
 
       <div class="clearfix space">
-        <span>{% trans "Inactive Roles" %}</span>
+        <span>{% trans "Inactive" %}</span>
         <div id="inactive-switch" class="make-switch switch-mini pull-right">
           <input id="inactive-filter" name="inactive" type="checkbox" />
         </div>
       </div>
-
-      <label for="gender">{% trans "Gender" %}</label>
-      <select id="gender-filter" name="gender" class="form-control" class="input-block-level">
-        <option value="">{% trans "Both" %}</option>
-        <option value="f">{% trans "Female" %}</option>
-        <option value="m">{% trans "Male" %}</option>
-      </select>
     </div>
 
   </div>
@@ -69,8 +60,15 @@
 {% block content %}
   <div id="member-list">
       <div class="row">
-        <div class="col-lg-4 col-lg-offset-8">
-          <input type="search" class="search form-control" placeholder="{% trans 'search' %}" />
+        <div class="col-lg-4">
+            <input type="search" class="search form-control" placeholder="{% trans 'search' %}" />
+        </div>
+        <div class="col-lg-4 col-lg-offset-4">
+            <select id="gender-filter" name="gender" class="form-control" class="input-block-level">
+              <option value="">{% trans "Female / Male" %}</option>
+              <option value="f">{% trans "Female" %}</option>
+              <option value="m">{% trans "Male" %}</option>
+            </select>
         </div>
       </div>
       <table class="table table-striped">
@@ -88,7 +86,10 @@
               <td class="scout_name"></td>
               <td class="first_name"></td>
               <td class="last_name"></td>
-              <td><button class="btn">Edit</td>
+              <td><button class="btn">
+                <i class="icon-pencil"></i>
+                Edit
+              </td>
           </tr>
         </tbody>
       </table>
