@@ -51,7 +51,6 @@ def members_data(request):
         'last_name',
     )
 
-    print member_data
     return HttpResponse(
         json.dumps(list(member_data), cls=DjangoJSONEncoder),
         mimetype="application/json"
