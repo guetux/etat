@@ -34,27 +34,23 @@
     </div>
 
     <h3>
-      <a href="#" data-toggle="collapse" data-target="#roles">
         {% trans "Roles" %}
-      </a>
     </h3>
-    <div id="roles" class="form-inline collapse">
-      <select id="roles-filter" name="roles" class="form-control space" multiple>
-        {% for role in roles %}
-          <option value="{{ role.id }}">{{ role }}</option>
-        {% endfor %}
-      </select>
-
-      <div class="status-filter btn-group full" data-toggle="buttons">
-        <label class="btn btn-default active half">
-          <input type="checkbox" name="active" checked>
-          {% trans "Active" %}
-        </label>
-        <label class="btn btn-default half">
-          <input type="checkbox" name="inactive">
-          {% trans "Inactive" %}
-        </label>
-      </div>
+    <select id="roles-filter" class="form-control chosen-select" data-placeholder="{% trans 'All' %}" multiple>
+      {% for role in roles %}
+        <option value="{{ role.id }}">{{ role }}</option>
+      {% endfor %}
+    </select>
+    <div class="space"></div>
+    <div class="status-filter btn-group full" data-toggle="buttons">
+      <label class="btn btn-default btn-sm active half">
+        <input type="checkbox" name="active" checked>
+        {% trans "Active" %}
+      </label>
+      <label class="btn btn-default btn-sm half">
+        <input type="checkbox" name="inactive">
+        {% trans "Inactive" %}
+      </label>
     </div>
 
   </div>
@@ -95,7 +91,7 @@
               <td class="scout_name"></td>
               <td class="first_name"></td>
               <td class="last_name"></td>
-              <td><button class="btn">
+              <td><button class="btn btn-xs">
                 <i class="icon-pencil"></i>
                 Edit
               </td>

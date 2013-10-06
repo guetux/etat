@@ -18,7 +18,7 @@ body {
 
 h1, h2, h3 {
     font-family: Roboto Slab;
-    margin: 10px 0;
+    margin: 0 0 10px 0;
 }
 
 h3 {
@@ -71,6 +71,14 @@ body {
 .jstree-apple,
 .jstree-apple > ul {
     background: none !important;
+}
+
+.chosen-container * {
+    box-sizing: content-box;
+}
+
+.chosen-container .chosen-choices {
+    border-radius: 4px;
 }
 
 /* bootstrap theming */

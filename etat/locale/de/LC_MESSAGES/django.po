@@ -222,11 +222,11 @@ msgstr "Alleswähler"
 
 #: templates/members/member_list.html:51
 msgid "Active"
-msgstr "Aktiv"
+msgstr "Aktive"
 
 #: templates/members/member_list.html:55
 msgid "Inactive"
-msgstr "Inaktiv"
+msgstr "Inaktive"
 
 #: templates/members/member_list.html:68
 msgid "search"
