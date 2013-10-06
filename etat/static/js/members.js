@@ -120,7 +120,7 @@ $(function () {
     $( "#memberlist").on("click", ".edit", function() {
         var id = $(this).parents('tr').find('td.id').text();
         var url = '/members/' + id + '/edit/';
-        load_modal(url, {width: '90%', backdrop: 'static'});
+        load_modal(url, {width: '1100px'});
     });
 
 

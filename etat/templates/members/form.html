@@ -10,25 +10,76 @@
 <form action="{% url 'member_edit' m_id=member.id %}" method="post" enctype="multipart/form-data" class="member-form">
     {% csrf_token %}
 
-    <div class="row">
-        <div class="col-md-6">
-            {{ form.scout_name|bootstrap }}
-            {{ form.first_name|bootstrap }}
-            {{ form.last_name|bootstrap }}
-            {{ form.gender|bootstrap }}
-            {{ form.birthday|bootstrap }}
+    <ul class="nav nav-tabs member-tab-nav">
+      <li><a href="#person" data-toggle="tab">{% trans "Person" %}</a></li>
+      <li><a href="#addresses" data-toggle="tab">{% trans "Addresses" %}</a></li>
+    </ul>
+    <div class="tab-content member-tabs">
+        <div class="tab-pane" id="person">
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form.scout_name|bootstrap }}
+                    {{ form.first_name|bootstrap }}
+                    {{ form.last_name|bootstrap }}
+                    {{ form.gender|bootstrap }}
+                    {{ form.birthday|bootstrap }}
+                </div>
+                <div class="col-md-6">
+                    {{ form.portrait|bootstrap }}
+                    {{ form.email|bootstrap }}
+                    {{ form.mobile|bootstrap }}
+                </div>
+            </div>
         </div>
-        <div class="col-md-6">
-            {{ form.portrait|bootstrap }}
-            {{ form.email|bootstrap }}
-            {{ form.mobile|bootstrap }}
+        <div class="tab-pane formset" id="addresses">
+            <div class="form-horizontal">
+                {{ address_formset.management_form }}
+                {% for address in address_formset %}
+                  {% if forloop.counter0|divisibleby:2  %}
+                    <div class="row">
+                  {% endif %}
+
+                    <div class="col-md-6 {% if forloop.last and not address.errors %}extra{% endif %}">
+                        {{ address|bootstrap_horizontal }}
+                    </div>
+
+                  {% if forloop.counter|divisibleby:2 or forloop.last %}
+                    </div>
+                  {% endif %}
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
 
 {% block footer %}
 <div class="modal-footer">
+  <button id="add-address" class="btn btn-success pull-left">
+    {% trans "Add Address" %}
+  </button>
+
   <input type="submit" class="btn btn-primary" value="{% trans 'Save' %}">
 </div>
+
+<script>
+    $('.member-tab-nav a').click(function() {
+        $(this).tab('show');
+    })
+    {% if form.errors %}
+        $('a[href=#person]').tab('show');
+    {% elif address_formset.errors %}
+        $('a[href=#addresses]').tab('show');
+    {% else %}
+        $('.member-tab-nav a:first').tab('show');
+    {% endif %}
+
+    $('#add-address').click(function () {
+        $('a[href=#addresses]').tab('show');
+        $('#addresses .extra').fadeIn();
+        $(this).prop('disabled', true);
+        return false;
+    })
+</script>
+
 </form>
 {% endblock %}

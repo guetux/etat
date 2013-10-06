@@ -73,6 +73,15 @@ h1 a:hover, h2 a:hover, h3 a:hover {
     margin-left: 180px;
 }
 
+.member-tabs .tab-pane {
+    padding: 20px 0;
+}
+
+
+.formset .extra {
+    display: none;
+}
+
 /*
 body {
     padding-top: 60px;
@@ -127,5 +136,4 @@ body {
     padding-top: 10px;
     padding-bottom: 10px;
 }
-
 

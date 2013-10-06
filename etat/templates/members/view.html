@@ -25,13 +25,14 @@
     </div>
     <div class="col-xs-4">
         {% with member.address as adr %}
-            <strong>{% trans "Address" %}</strong>
-            <p>{{ adr.street }}</p>
-            <p>{{ adr.addition }}</p>
-            <p>{{ adr.postal_code }} {{ adr.city }}</p>
-            {% if adr.country != 'CH' %}
-                <p>{{ adr.get_country_display }}</p>
-            {% endif %}
+            <dt>{% trans "Address" %}</dt>
+            <dd>{{ adr.street }}<br>
+                {% if adr.addition %}{{ adr.addition }}<br>{% endif %}
+                {{ adr.postal_code }} {{ adr.city }}<br>
+                {% if adr.country != 'CH' %}
+                    {{ adr.get_country_display }}
+                {% endif %}
+            </dd>
         {% endwith %}
     </div>
 </div>
