@@ -34,22 +34,26 @@
     </div>
 
     <h3>
-      <a href="#" data-toggle="collapse" data-target="#filters">
+      <a href="#" data-toggle="collapse" data-target="#roles">
         {% trans "Roles" %}
       </a>
     </h3>
-    <div id="filters" class="form-inline collapse">
+    <div id="roles" class="form-inline collapse">
       <select id="roles-filter" name="roles" class="form-control space" multiple>
         {% for role in roles %}
           <option value="{{ role.id }}">{{ role }}</option>
         {% endfor %}
       </select>
 
-      <div class="clearfix space">
-        <span>{% trans "Inactive" %}</span>
-        <div id="inactive-switch" class="make-switch switch-mini pull-right">
-          <input id="inactive-filter" name="inactive" type="checkbox" />
-        </div>
+      <div class="status-filter btn-group full" data-toggle="buttons">
+        <label class="btn btn-default active half">
+          <input type="checkbox" name="active" checked>
+          {% trans "Active" %}
+        </label>
+        <label class="btn btn-default half">
+          <input type="checkbox" name="inactive">
+          {% trans "Inactive" %}
+        </label>
       </div>
     </div>
 
@@ -59,16 +63,21 @@
 
 {% block content %}
   <div id="member-list">
-      <div class="row">
-        <div class="col-lg-4">
+      <div class="row space">
+        <div class="col-md-4">
             <input type="search" class="search form-control" placeholder="{% trans 'search' %}" />
         </div>
-        <div class="col-lg-4 col-lg-offset-4">
-            <select id="gender-filter" name="gender" class="form-control" class="input-block-level">
-              <option value="">{% trans "Female / Male" %}</option>
-              <option value="f">{% trans "Female" %}</option>
-              <option value="m">{% trans "Male" %}</option>
-            </select>
+        <div class="col-md-4 col-md-offset-4">
+          <div class="gender-filter btn-group full" data-toggle="buttons">
+            <label class="btn btn-default half">
+              <input type="checkbox" name="m">
+              {% trans "Male" %}
+            </label>
+            <label class="btn btn-default half">
+              <input type="checkbox" name="f">
+              {% trans "Female" %}
+            </label>
+          </div>
         </div>
       </div>
       <table class="table table-striped">
@@ -93,6 +102,9 @@
           </tr>
         </tbody>
       </table>
+
+      <div id="members"></div>
+
 
       <div id="empty-msg" class="alert">
         {% trans "Empty department." %}

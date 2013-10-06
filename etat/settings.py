@@ -113,6 +113,7 @@ INSTALLED_APPS = (
     'mptt',
     'django_reset',
     'django_countries',
+    'django_filters',
     'rest_framework',
 
     'etat',

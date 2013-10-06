@@ -6,35 +6,41 @@ ml = new List('member-list', {
 
 function load_members() {
     // Reload members for selected departments
-    var deptree = jQuery.jstree._reference('#department_tree');
-    var ids = [];
-    data = {};
+    var deptree = jQuery.jstree._reference('#department_tree'),
+        ids = [],
+        data = {};
 
     // Use checked departmens if checkbox is enabled
-    $.each(deptree.get_checked(null, true), function (i, e) {
-        ids.push(parseInt(e.id));
+    _.each(deptree.get_checked(null, true), function(e) {
+        ids.push(parseInt(e.id, 10));
     });
 
     // Use selection if no checkbox is set
     if (ids.length === 0) {
-        $.each(deptree.get_selected(), function (i, e) {
-            ids.push(parseInt(e.id));
+        _.each(deptree.get_selected(), function(e) {
+            ids.push(parseInt(e.id, 10));
         });
     }
 
-    data['department_ids'] = ids;
+    data['departments'] = ids;
 
     // Collect filters
     data['roles'] = $('#roles-filter').val();
-    data['gender'] = $('#gender-filter').val();
-    data['inactive'] = $('#inactive-filter').is(':checked');
+
+    var active = $('input[name=active]').prop('checked'),
+        inactive = $('input[name=inactive]').prop('checked');
+    if (active && !inactive) {
+        data['status'] = 'active';
+    } else if (inactive && !active) {
+        data['status'] = 'inactive';
+    }
 
     $.ajax({
         dataType: 'json',
         type: 'GET',
-        url: 'data/',
+        url: '/api/members/',
         data: data,
-        success: function (data) {
+        success: function(data) {
             ml.clear();
             if (data.length) {
                 ml.add(data);
@@ -43,7 +49,7 @@ function load_members() {
                 $('#empty-msg').show();
             }
             ml.search();
-            ml.sort('scout_name', { asc: true });
+            ml.sort('id', { asc: true });
             $('#member-list').find('input[type=search]').val('');
         }
     });
@@ -70,8 +76,8 @@ $(function () {
 
     // checkbox enabler
     var deptree = jQuery.jstree._reference('#department_tree');
-    setTimeout(function () { deptree.hide_checkboxes();}, 10);
-    $('#checkselector').on('switch-change', function (e, data) {
+    setTimeout(function() { deptree.hide_checkboxes();}, 10);
+    $('#checkselector').on('switch-change', function(e, data) {
         if (data.value) {
             deptree.show_checkboxes();
         } else {
@@ -83,19 +89,25 @@ $(function () {
 
     // filter actions
     $('#roles-filter').change(load_members);
-    $('#gender-filter').change(load_members);
-    $('#inactive-switch').on('switch-change', load_members);
+    $('.status-filter input').change(load_members);
 
-    // filter collapse
-    $('#filters').on('hidden', function () {
-        var caret = $('a[data-target="#filters"]').find('i');
-        caret.removeClass('icon-caret-up');
-        caret.addClass('icon-caret-down');
+    $('input[name=male]').change(function() {
+        show = $(this).prop('checked');
+        ml.filter(function(member) {
+            return member.values().gender == 'm' && show;
+        });
     });
 
-    $('#filters').on('shown', function () {
-        var caret = $('a[data-target="#filters"]').find('i');
-        caret.removeClass('icon-caret-down');
-        caret.addClass('icon-caret-up');
+    $('.gender-filter input').change(function() {
+        var show_m = $('input[name=m]').prop('checked'),
+            show_f = $('input[name=f]').prop('checked');
+        if (!show_m && !show_f) {
+            ml.filter();
+        } else {
+            ml.filter(function(member) {
+                var gender = member.values().gender;
+                return gender == 'm' && show_m || gender == 'f' && show_f;
+            });
+        }
     });
 });

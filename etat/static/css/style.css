@@ -5,6 +5,10 @@
 .hidden { display:none; }
 .space { margin-bottom: 10px;}
 .scrollbox { overflow: auto; }
+.template { display: none; }
+
+.full { width: 100%; }
+.half { width: 50%; }
 
 /* main styles */
 
