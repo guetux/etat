@@ -72,7 +72,10 @@ class Role(models.Model):
             raise ValidationError(_('Start data has to be before end date!'))
 
     def __unicode__(self):
-        return _('%s at %s') % (self.type, self.department)
+        return _('%(type)s at %(department)s') % {
+            'type': self.type,
+            'department': self.department
+        }
 
 
 class Address(models.Model):

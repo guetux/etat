@@ -1,0 +1,237 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-10-06 16:28+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: settings.py:36
+msgid "German"
+msgstr "Deutsch"
+
+#: settings.py:37
+msgid "English"
+msgstr "Englisch"
+
+#: departments/models.py:8 departments/models.py:22 members/models.py:46
+msgid "name"
+msgstr "Name"
+
+#: departments/models.py:9
+msgid "description"
+msgstr "Beschreibung"
+
+#: departments/models.py:13
+msgid "Department type"
+msgstr "Einheitstyp"
+
+#: departments/models.py:14
+msgid "Department types"
+msgstr "Einheitstypen"
+
+#: departments/models.py:24 members/models.py:27
+msgid "notes"
+msgstr "Notizen"
+
+#: departments/models.py:25
+msgid "website"
+msgstr "Webseite"
+
+#: departments/models.py:26
+msgid "logo"
+msgstr "Logo"
+
+#: departments/models.py:34
+msgid "Department"
+msgstr "Einheit"
+
+#: departments/models.py:35 templates/members/member_list.html:10
+msgid "Departments"
+msgstr "Einheiten"
+
+#: members/models.py:10 templates/members/member_list.html:78
+msgid "female"
+msgstr "weiblich"
+
+#: members/models.py:11 templates/members/member_list.html:74
+msgid "male"
+msgstr "männlich"
+
+#: members/models.py:14 templates/members/member_list.html:86
+msgid "scout name"
+msgstr "Pfadiname"
+
+#: members/models.py:15 templates/members/member_list.html:87
+msgid "first name"
+msgstr "Vorname"
+
+#: members/models.py:16 templates/members/member_list.html:88
+msgid "last name"
+msgstr "Nachname"
+
+#: members/models.py:18
+msgid "portrait"
+msgstr "Portrait"
+
+#: members/models.py:21
+msgid "gender"
+msgstr "Geschlecht"
+
+#: members/models.py:22
+msgid "birthday"
+msgstr "Geburtstag"
+
+#: members/models.py:24
+msgid "Mobile"
+msgstr "Mobile"
+
+#: members/models.py:25
+msgid "Phone"
+msgstr "Telefon"
+
+#: members/models.py:33
+msgid "Member"
+msgstr "Mitglied"
+
+#: members/models.py:34 templates/base.html:36
+msgid "Members"
+msgstr "Mitglieder"
+
+#: members/models.py:50
+msgid "Role type"
+msgstr "Funktionstyp"
+
+#: members/models.py:51
+msgid "Role types"
+msgstr "Funktionstypen"
+
+#: members/models.py:63
+msgid "start"
+msgstr "Start"
+
+#: members/models.py:64
+msgid "end"
+msgstr "Ende"
+
+#: members/models.py:67
+msgid "Role"
+msgstr "Funktion"
+
+#: members/models.py:68 templates/members/member_list.html:38
+msgid "Roles"
+msgstr "Funktionen"
+
+#: members/models.py:72
+msgid "Start data has to be before end date!"
+msgstr "Start Datum muss vor dem Ende sein!"
+
+#: members/models.py:75
+#, python-format
+msgid "%(type)s at %(department)s"
+msgstr "%(type)s bei %(department)s"
+
+#: members/models.py:85
+msgid "street"
+msgstr "Strasse"
+
+#: members/models.py:86
+msgid "addition"
+msgstr "Zusatz"
+
+#: members/models.py:88
+msgid "Postal Code"
+msgstr "PLZ"
+
+#: members/models.py:89
+msgid "city"
+msgstr "Ort"
+
+#: members/models.py:91
+msgid "country"
+msgstr "Land"
+
+#: members/models.py:94
+msgid "Address"
+msgstr "Adresse"
+
+#: members/models.py:95
+msgid "Addresses"
+msgstr "Adressen"
+
+#: templates/404.html:6
+msgid "Page Not Found"
+msgstr ""
+
+#: templates/404.html:32
+msgid "Not found"
+msgstr ""
+
+#: templates/404.html:33
+msgid "Sorry, but the page you were trying to view does not exist."
+msgstr ""
+
+#: templates/404.html:34
+msgid "It looks like this was the result of either:"
+msgstr ""
+
+#: templates/404.html:36
+msgid "a mistyped address"
+msgstr ""
+
+#: templates/404.html:37
+msgid "an out-of-date link"
+msgstr ""
+
+#: templates/500.html:6 templates/500.html.py:32
+msgid "Server Error"
+msgstr ""
+
+#: templates/500.html:34
+msgid ""
+"Sorry, but the server encountered an error while processing your request."
+msgstr ""
+
+#: templates/base.html:30
+msgid "ETAT"
+msgstr "ETAT"
+
+#: templates/base.html:45
+msgid "Admin"
+msgstr "Admin"
+
+#: templates/base.html:58
+msgid "Log out"
+msgstr "Abmelden"
+
+#: templates/members/member_list.html:30
+msgid "Deep selector"
+msgstr "Alleswähler"
+
+#: templates/members/member_list.html:51
+msgid "Active"
+msgstr "Aktiv"
+
+#: templates/members/member_list.html:55
+msgid "Inactive"
+msgstr "Inaktiv"
+
+#: templates/members/member_list.html:68
+msgid "search"
+msgstr "suchen"
+
+#: templates/members/member_list.html:110
+msgid "Empty department."
+msgstr "Leere Einheit."
