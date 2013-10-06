@@ -82,6 +82,7 @@
             <th class="sort" data-sort="scout_name">{% trans 'scout name' %}</th>
             <th class="sort" data-sort="first_name">{% trans 'first name' %}</th>
             <th class="sort" data-sort="last_name">{% trans 'last name' %}</th>
+            <th class="sort" data-sort="roles_display">{% trans 'Role' %}</th>
             <th></th>
           </tr>
         </thead>
@@ -91,19 +92,14 @@
               <td class="scout_name"></td>
               <td class="first_name"></td>
               <td class="last_name"></td>
-              <td><button class="btn btn-xs">
-                <i class="icon-pencil"></i>
-                Edit
+              <td class="roles_display"></td>
+              <td>
+                <button class="btn btn-xs">
+                  <i class="icon-pencil"></i>Edit
+                </button>
               </td>
           </tr>
         </tbody>
       </table>
-
-      <div id="members"></div>
-
-
-      <div id="empty-msg" class="alert">
-        {% trans "Empty department." %}
-      </div>
   </div>
 {% endblock %}

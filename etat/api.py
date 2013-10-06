@@ -1,9 +1,10 @@
 from django.db.models import Q
 from django.utils.timezone import now
 
-from rest_framework import viewsets, filters, routers
+from rest_framework import viewsets, filters, serializers, routers
 
-from .members.models import Member
+from .departments.models import Department, DepartmentType
+from .members.models import Member, RoleType, Role
 
 
 class MemberFilter(filters.BaseFilterBackend):
@@ -31,13 +32,63 @@ class MemberFilter(filters.BaseFilterBackend):
             )
         elif status == 'inactive':
             filter_args.append(Q(roles__end__lte=now()))
+        elif status == 'none':
+            return queryset.none()
 
-        return queryset.filter(*filter_args)
+        return queryset.filter(*filter_args).distinct()
+
+
+class FilteredRoleField(serializers.RelatedField):
+
+    def initialize(self, parent, field_name):
+        super(FilteredRoleField, self).initialize(parent, field_name)
+        print self.queryset
+
+
+class RoleInlineSerializer(serializers.ModelSerializer):
+    type = serializers.RelatedField(read_only=True)
+
+    class Meta:
+        model = Role
+        fields = ('department', 'type')
+
+    def to_native(self, obj):
+        data = super(RoleInlineSerializer, self).to_native(obj)
+        data['active'] = obj.active
+        return data
+
+
+class MemberSerializer(serializers.ModelSerializer):
+    roles = RoleInlineSerializer(many=True)
+
+    class Meta:
+        model = Member
+
+class DepartmentViewSet(viewsets.ModelViewSet):
+    model = Department
+
+
+class DepartmentTypeViewSet(viewsets.ModelViewSet):
+    model = DepartmentType
 
 
 class MemberViewSet(viewsets.ModelViewSet):
     model = Member
     filter_backends = (MemberFilter,)
+    serializer_class = MemberSerializer
+
+
+class RoleTypeViewSet(viewsets.ModelViewSet):
+    model = RoleType
+
+
+class RoleViewSet(viewsets.ModelViewSet):
+    model = Role
+
 
 api = routers.DefaultRouter()
+api.register(r'departments', DepartmentViewSet)
+api.register(r'department_types', DepartmentTypeViewSet)
 api.register(r'members', MemberViewSet)
+api.register(r'role_types', RoleTypeViewSet)
+api.register(r'roles', RoleViewSet)

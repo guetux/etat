@@ -1,6 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.utils.timezone import now
 
 from django_countries import CountryField
 
@@ -76,6 +77,10 @@ class Role(models.Model):
             'type': self.type,
             'department': self.department
         }
+
+    @property
+    def active(self):
+        return self.end is None or now().date() < self.end
 
 
 class Address(models.Model):

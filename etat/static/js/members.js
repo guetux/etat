@@ -33,6 +33,8 @@ function load_members() {
         data['status'] = 'active';
     } else if (inactive && !active) {
         data['status'] = 'inactive';
+    } else if (!active && !inactive) {
+        data['status'] = 'none';
     }
 
     $.ajax({
@@ -43,15 +45,31 @@ function load_members() {
         success: function(data) {
             ml.clear();
             if (data.length) {
+                append_roles(data, ids, active, inactive);
                 ml.add(data);
                 $('#empty-msg').hide();
-            } else {
-                $('#empty-msg').show();
             }
             ml.search();
             ml.sort('id', { asc: true });
             $('#member-list').find('input[type=search]').val('');
         }
+    });
+}
+
+function append_roles(members, deparment_ids, show_active, show_inactive) {
+    _.each(members, function(m) {
+        roles = [];
+        _.each(m.roles, function(r) {
+            console.log(m.scout_name);
+            console.log(r.type);
+            console.log(_.indexOf(deparment_ids, r.department));
+            if (_.indexOf(deparment_ids, r.department) != -1) {
+                if (r.active && show_active || !r.active && show_inactive) {
+                    roles.push(r.type);
+                }
+            }
+        });
+        m.roles_display = roles.join(', ');
     });
 }
 
