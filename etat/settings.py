@@ -115,6 +115,8 @@ INSTALLED_APPS = (
     'django_countries',
     'django_filters',
     'rest_framework',
+    'bootstrapform',
+    'sorl.thumbnail',
 
     'etat',
     'etat.departments',

@@ -60,9 +60,6 @@ function append_roles(members, deparment_ids, show_active, show_inactive) {
     _.each(members, function(m) {
         roles = [];
         _.each(m.roles, function(r) {
-            console.log(m.scout_name);
-            console.log(r.type);
-            console.log(_.indexOf(deparment_ids, r.department));
             if (_.indexOf(deparment_ids, r.department) != -1) {
                 if (r.active && show_active || !r.active && show_inactive) {
                     roles.push(r.type);
@@ -103,6 +100,43 @@ $(function () {
             deptree.hide_checkboxes();
             load_members();
         }
+    });
+
+    // Edit actions
+    var $modal = $('#ajax-modal');
+    function load_modal(url, options) {
+        $('body').modalmanager('loading');
+        $modal.load(url, '', function(){
+            $modal.modal(options);
+        });
+    }
+
+    $( "#memberlist").on("click", ".detail", function() {
+        var id = $(this).parents('tr').find('td.id').text();
+        var url = '/members/' + id + '/';
+        load_modal(url, {width: '60%'});
+    });
+
+    $( "#memberlist").on("click", ".edit", function() {
+        var id = $(this).parents('tr').find('td.id').text();
+        var url = '/members/' + id + '/edit/';
+        load_modal(url, {width: '90%', backdrop: 'static'});
+    });
+
+
+    // Edit form handling
+
+    $('#ajax-modal').on("submit", '.member-form', function() {
+        $(this).ajaxSubmit({
+            target: '#ajax-modal',
+            success: function (res, status, xhr) {
+                if (xhr.status == 201) {
+                    load_members();
+                    $modal.modal('hide');
+                }
+            }
+        });
+        return false;
     });
 
     // filter actions

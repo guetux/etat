@@ -1,0 +1,42 @@
+{% extends "modal.html" %}
+{% load i18n thumbnail %}
+
+{% block title %}
+    {{ member.fullname }}
+    {% if member.scout_name %}v/o {{ member.scout_name}}{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-xs-4">
+        {% thumbnail member.portrait "x120" as im %}
+            <img src="{{ im.url }}">
+        {% empty %}
+            <p>{% trans "No image" %}</p>
+        {% endthumbnail %}
+    </div>
+    <div class="col-xs-4">
+        <dt>{% trans "birthday" %}</dt>
+            <dd>{{ member.birthday|default:'?' }}</dd>
+        <dt>{% trans "Email" %}</dt>
+            <dd>{{ member.email|default:'?' }}</dd>
+        <dt>{% trans "Mobile" %}</dt>
+            <dd>{{ member.mobile|default:'?' }}</dd>
+    </div>
+    <div class="col-xs-4">
+        {% with member.address as adr %}
+            <strong>{% trans "Address" %}</strong>
+            <p>{{ adr.street }}</p>
+            <p>{{ adr.addition }}</p>
+            <p>{{ adr.postal_code }} {{ adr.city }}</p>
+            {% if adr.country != 'CH' %}
+                <p>{{ adr.get_country_display }}</p>
+            {% endif %}
+        {% endwith %}
+    </div>
+</div>
+{% endblock %}
+
+
+
+

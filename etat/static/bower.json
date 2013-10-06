@@ -13,8 +13,12 @@
     "bootstrap": "~3.0.0",
     "pines-notify": "~1.2.0",
     "jquery.cookie": "~1.4.0",
-    "bootstrap-switch": "*",
     "listjs": "~0.2.1",
-    "jstree-dist": "*"
+    "jstree-dist": "*",
+    "jquery-form": "~3.37.0",
+    "bootstrap-switch": "*"
+  },
+  "resolutions": {
+    "jquery": "~2.0.3"
   }
 }

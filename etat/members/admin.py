@@ -1,6 +1,7 @@
 from django.contrib import admin
 
 from suit.admin import SortableModelAdmin
+from sorl.thumbnail.admin import AdminImageMixin
 
 import models
 
@@ -16,7 +17,7 @@ class RoleAdminInline(admin.TabularInline):
     extra = 0
 
 
-class MemberAdmin(admin.ModelAdmin):
+class MemberAdmin(AdminImageMixin, admin.ModelAdmin):
     list_display = ('scout_name', 'first_name', 'last_name')
 
     inlines = [
@@ -27,7 +28,7 @@ class MemberAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {
             'fields': ('scout_name', 'first_name', 'last_name', 'portrait',
-                'gender', 'birthday', 'mobile', 'phone')
+                'gender', 'birthday', 'email', 'mobile')
         }),
         ('Notes', {
             'classes': ('collapse',),

@@ -5,6 +5,7 @@ from django.utils.timezone import now
 
 from django_countries import CountryField
 
+from sorl.thumbnail import ImageField
 
 class Member(models.Model):
     GENDER_CHOICES = (
@@ -16,14 +17,14 @@ class Member(models.Model):
     first_name = models.CharField(_('first name'), max_length=100)
     last_name = models.CharField(_('last name'), max_length=100)
 
-    portrait = models.ImageField(_('portrait'), upload_to='members',
+    portrait = ImageField(_('portrait'), upload_to='members',
         null=True, blank=True)
 
     gender = models.CharField(_('gender'), max_length=2, choices=GENDER_CHOICES)
     birthday = models.DateField(_('birthday'), null=True, blank=True)
 
-    mobile = models.CharField(_('Mobile'), max_length=30, blank=True)
-    phone = models.CharField(_('Phone'), max_length=30, blank=True)
+    email = models.EmailField(_('email'), max_length=100, blank=True)
+    mobile = models.CharField(_('mobile'), max_length=30, blank=True)
 
     notes = models.TextField(_('notes'), blank=True)
 
@@ -41,6 +42,12 @@ class Member(models.Model):
     def fullname(self):
         return u'%s %s' % (self.first_name, self.last_name)
 
+    @property
+    def address(self):
+        try:
+            return self.addresses.get(main=True)
+        except:
+            return None
 
 class RoleType(models.Model):
 
@@ -86,18 +93,26 @@ class Role(models.Model):
 class Address(models.Model):
 
     member = models.ForeignKey(Member, related_name='addresses')
+    main = models.BooleanField(_('main address'))
 
     street = models.CharField(_('street'), max_length=100)
     addition = models.CharField(_('addition'), max_length=100, blank=True)
-
     postal_code = models.PositiveIntegerField(_('Postal Code'))
     city = models.CharField(_('city'), max_length=100)
-
     country = CountryField(_('country'), default='CH')
+
+    phone = models.CharField(_('phone'), max_length=30, blank=True)
+
 
     class Meta:
         verbose_name = _('Address')
         verbose_name_plural = _('Addresses')
+
+    def save(self, *args, **kwargs):
+        if self.main:
+            my_id = getattr(self, 'id', None)
+            self.member.addresses.exclude(pk=my_id).update(main=False)
+        super(Address, self).save(*args, **kwargs)
 
     def __unicode__(self):
         return u'%s' % self.member

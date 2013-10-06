@@ -1,10 +1,16 @@
 from django.conf.urls import patterns, url
 
-from .views import *
-
-urlpatterns = patterns('',
+urlpatterns = patterns('etat.members.views',
     url(r'^$',
-        members_list,
-        name='members_list'
+        'member_list',
+        name='member_list'
+    ),
+    url(r'^(?P<m_id>\d+)/$',
+        'member_view',
+        name='member_view',
+    ),
+    url(r'^(?P<m_id>\d+)/edit/$',
+        'member_edit',
+        name='member_edit'
     ),
 )

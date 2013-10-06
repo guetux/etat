@@ -11,6 +11,8 @@
 
   <link rel="stylesheet" href="{{ STATIC_URL }}libs/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="{{ STATIC_URL }}libs/bootstrap-switch/static/stylesheets/bootstrap-switch.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}libs/bootstrap-modal/css/bootstrap-modal-bs3patch.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}libs/bootstrap-modal/css/bootstrap-modal.css">
   <link rel="stylesheet" href="{{ STATIC_URL }}libs/font-awesome/css/font-awesome.css">
   <link rel="stylesheet" href="{{ STATIC_URL }}libs/chosen/chosen.css">
   <link rel="stylesheet" href="{{ STATIC_URL }}libs/pines-notify/jquery.pnotify.default.css"/>
@@ -33,7 +35,7 @@
           <ul class="nav navbar-nav">
             {% block nav %}
             <li>
-                <a href="{% url 'members_list' %}">
+                <a href="{% url 'member_list' %}">
                   <i class="icon-group"></i> {% trans "Members" %}
                 </a>
             </li>
@@ -74,11 +76,16 @@
     {% endblock container %}
   {% endblock body %}
 
+  <div id="ajax-modal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true"></div>
+
   <script src="{{ STATIC_URL }}libs/jquery/jquery.js"></script>
   <script src="{{ STATIC_URL }}libs/jquery.cookie/jquery.cookie.js"></script>
+  <script src="{{ STATIC_URL }}libs/jquery-form/jquery.form.js"></script>
   <script src="{{ STATIC_URL }}libs/chosen/chosen.jquery.js"></script>
   <script src="{{ STATIC_URL }}libs/bootstrap/dist/js/bootstrap.js"></script>
   <script src="{{ STATIC_URL }}libs/bootstrap-switch/static/js/bootstrap-switch.js"></script>
+  <script src="{{ STATIC_URL }}libs/bootstrap-modal/js/bootstrap-modal.js"></script>
+  <script src="{{ STATIC_URL }}libs/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
   <script src="{{ STATIC_URL }}libs/pines-notify/jquery.pnotify.js"></script>
   <script src="{{ STATIC_URL }}libs/jstree-dist/jquery.jstree.js"></script>
   <script src="{{ STATIC_URL }}libs/listjs/src/list.js"></script>
