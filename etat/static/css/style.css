@@ -69,7 +69,7 @@ h1 a:hover, h2 a:hover, h3 a:hover {
 }
 
 .portrait input[type=file] {
-    width: auto;
+    width: 56%;
     margin-left: 180px;
 }
 
@@ -82,7 +82,7 @@ h1 a:hover, h2 a:hover, h3 a:hover {
     display: none;
 }
 
-#roles .chose .form-group {
+.chose .form-group {
     width: 100%;
 }
 

@@ -72,11 +72,11 @@
                 {{ roles_formset.management_form }}
                 <table class="table">
                     <tr>
-                        <th>{% trans "Department" %}</th>
-                        <th>{% trans "Role" %}</th>
-                        <th>{% trans "start" %}</th>
-                        <th>{% trans "end" %}</th>
-                        <th>{% trans "Delete" %}</th>
+                        <th width="25%">{% trans "Department" %}</th>
+                        <th width="25%">{% trans "Role" %}</th>
+                        <th width="20%">{% trans "start" %}</th>
+                        <th width="20%">{% trans "end" %}</th>
+                        <th width="10%">{% trans "Delete" %}</th>
                     </tr>
                     {% for role in roles_formset %}
                         {% for field in role.hidden_fields %}
@@ -100,7 +100,11 @@
                         </div>
                     {% endif %}
                 {% endfor %}
-                {{ roles_formset.error_class }}
+                {% for non_form_error in roles_formset.non_form_errors %}
+                    <div class="alert alert-danger">
+                        {{ non_form_error }}
+                    </div>
+                {% endfor %}
             </div>
         </div>
         <div class="tab-pane" id="notes">

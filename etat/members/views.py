@@ -35,6 +35,9 @@ def member_edit(request, m_id):
         address_formset = AddressFormSet(request.POST, instance=member)
         roles_formset = RoleFormSet(request.POST, instance=member)
 
+        address_formset.full_clean()
+        roles_formset.full_clean()
+
         if form.is_valid() and address_formset.is_valid() and roles_formset.is_valid():
             form.save()
             address_formset.save()
@@ -45,8 +48,8 @@ def member_edit(request, m_id):
         address_formset = AddressFormSet(instance=member)
         roles_formset = RoleFormSet(instance=member)
 
-    address_formset.has_errors = any(e for e in address_formset.errors)
-    roles_formset.has_errors = any(e for e in roles_formset.errors)
+    address_formset.has_errors = any(address_formset.errors + address_formset.non_form_errors())
+    roles_formset.has_errors = any(roles_formset.errors + roles_formset.non_form_errors())
 
     return render(request, 'members/form.html', {
         'member': member,

@@ -1,9 +1,9 @@
 
 from django import forms
 from django.core.exceptions import ValidationError
-from django.forms.formsets import BaseFormSet
-from django.forms.models import inlineformset_factory
+from django.forms.models import inlineformset_factory, BaseInlineFormSet
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
 
 from mptt.fields import TreeNodeChoiceField
 
@@ -33,6 +33,18 @@ class RoleInlineForm(forms.ModelForm):
         }
 
 
+class RequireRoleFormset(BaseInlineFormSet):
+    def clean(self):
+        super(RequireRoleFormset, self).clean()
+        if self.is_valid():
+            self.saved_forms = []
+            initial = self.initial_form_count()
+            new = len(self.save_new_objects(commit=False))
+            deleted = len(self.deleted_forms)
+            if initial + new - deleted == 0:
+                raise ValidationError(_('Member must have at least one Role!'))
+
+
 AddressFormSet = inlineformset_factory(
     Member,
     Address,
@@ -44,4 +56,5 @@ RoleFormSet = inlineformset_factory(
     Role,
     extra=1,
     form=RoleInlineForm,
+    formset=RequireRoleFormset
 )
