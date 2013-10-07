@@ -79,6 +79,10 @@
         $(this).prop('disabled', true);
         return false;
     })
+
+    $('input[name$=main]').change(function (e) {
+        $('input[name$=main][id!='+this.id+']').prop('checked', false);
+    })
 </script>
 
 </form>
