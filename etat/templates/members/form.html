@@ -13,8 +13,21 @@
     <ul class="nav nav-tabs member-tab-nav">
       <li><a href="#person" data-toggle="tab">{% trans "Person" %}</a></li>
       <li><a href="#addresses" data-toggle="tab">{% trans "Addresses" %}</a></li>
+      <li><a href="#roles" data-toggle="tab">{% trans "Roles" %}</a></li>
     </ul>
     <div class="tab-content member-tabs">
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {% for non_field_error in form.non_field_errors %}
+                     {{ non_field_error }}
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% for field in form.hidden_fields %}
+            {{ field }}
+        {% endfor %}
+
         <div class="tab-pane" id="person">
             <div class="row">
                 <div class="col-md-6">
@@ -49,16 +62,55 @@
                 {% endfor %}
             </div>
         </div>
+        <div class="tab-pane formset" id="roles">
+            <div class="form-inline">
+                {{ roles_formset.management_form }}
+                <table class="table">
+                    <tr>
+                        <th>{% trans "Department" %}</th>
+                        <th>{% trans "Role" %}</th>
+                        <th>{% trans "start" %}</th>
+                        <th>{% trans "end" %}</th>
+                        <th>{% trans "Delete" %}</th>
+                    </tr>
+                    {% for role in roles_formset %}
+                        {% for field in role.hidden_fields %}
+                            {{ field }}
+                        {% endfor %}
+                        <tr class="{% if role.non_field_errors %}danger{% endif %}
+                            {% if forloop.last and not role.errors %}extra{% endif %}">
+                            <td class="chose">{{ role.department|bootstrap_inline }}</td>
+                            <td class="chose">{{ role.type|bootstrap_inline }}</td>
+                            <td>{{ role.start|bootstrap_inline }}</td>
+                            <td>{{ role.end|bootstrap_inline  }}</td>
+                            <td>{{ role.DELETE }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+
+                {% for role in roles_formset %}
+                    {% if role.non_field_errors %}
+                        <div class="alert alert-danger">
+                            {{ role.non_field_errors }}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {{ roles_formset.error_class }}
+            </div>
+        </div>
     </div>
 {% endblock %}
 
 {% block footer %}
 <div class="modal-footer">
-  <button id="add-address" class="btn btn-success pull-left">
-    {% trans "Add Address" %}
-  </button>
+    <button id="add-address" class="btn btn-success pull-left">
+        {% trans "Add Address" %}
+    </button>
+    <button id="add-role" class="btn btn-warning pull-left">
+        {% trans "Add Role" %}
+    </button>
 
-  <input type="submit" class="btn btn-primary" value="{% trans 'Save' %}">
+    <input type="submit" class="btn btn-primary" value="{% trans 'Save' %}">
 </div>
 
 <script>
@@ -67,8 +119,10 @@
     })
     {% if form.errors %}
         $('a[href=#person]').tab('show');
-    {% elif address_formset.errors %}
+    {% elif address_formset.has_errors %}
         $('a[href=#addresses]').tab('show');
+    {% elif roles_formset.has_errors %}
+        $('a[href=#roles]').tab('show');
     {% else %}
         $('.member-tab-nav a:first').tab('show');
     {% endif %}
@@ -80,9 +134,19 @@
         return false;
     })
 
+    $('#add-role').click(function () {
+        $('a[href=#roles]').tab('show');
+        $('#roles .extra').fadeIn();
+        $(this).prop('disabled', true);
+        return false;
+    })
+
     $('input[name$=main]').change(function (e) {
         $('input[name$=main][id!='+this.id+']').prop('checked', false);
     })
+
+    $(".member-form select").chosen({width: '80%'});
+    $(".datepicker").datepicker({format: 'dd.mm.yyyy'});
 </script>
 
 </form>

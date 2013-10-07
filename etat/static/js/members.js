@@ -134,6 +134,9 @@ $(function () {
                     load_members();
                     $modal.modal('hide');
                 }
+            },
+            error: function(res) {
+                $modal.html('<pre>'+res.responseText+'</p>');
             }
         });
         return false;

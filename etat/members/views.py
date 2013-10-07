@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404
 from ..departments.models import Department
 
 from .models import Member, RoleType
-from .forms import MemberForm, AddressFormSet
+from .forms import MemberForm, AddressFormSet, RoleFormSet
 
 
 def member_list(request):
@@ -33,18 +33,25 @@ def member_edit(request, m_id):
             form = MemberForm(request.POST, instance=member)
 
         address_formset = AddressFormSet(request.POST, instance=member)
+        roles_formset = RoleFormSet(request.POST, instance=member)
 
-        if form.is_valid() and address_formset.is_valid():
+        if form.is_valid() and address_formset.is_valid() and roles_formset.is_valid():
             form.save()
             address_formset.save()
+            roles_formset.save()
             return HttpResponse('Saved', status=201)
     else:
         form = MemberForm(instance=member)
         address_formset = AddressFormSet(instance=member)
+        roles_formset = RoleFormSet(instance=member)
+
+    address_formset.has_errors = any(e for e in address_formset.errors)
+    roles_formset.has_errors = any(e for e in roles_formset.errors)
 
     return render(request, 'members/form.html', {
         'member': member,
         'form': form,
         'address_formset': address_formset,
+        'roles_formset': roles_formset,
     })
 

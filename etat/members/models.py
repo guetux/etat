@@ -76,7 +76,7 @@ class Role(models.Model):
         verbose_name_plural = _('Roles')
 
     def clean(self):
-        if self.end and self.start >= self.end:
+        if self.start and self.end and self.start >= self.end:
             raise ValidationError(_('Start data has to be before end date!'))
 
     def __unicode__(self):

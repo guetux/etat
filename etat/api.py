@@ -38,13 +38,6 @@ class MemberFilter(filters.BaseFilterBackend):
         return queryset.filter(*filter_args).distinct()
 
 
-class FilteredRoleField(serializers.RelatedField):
-
-    def initialize(self, parent, field_name):
-        super(FilteredRoleField, self).initialize(parent, field_name)
-        print self.queryset
-
-
 class RoleInlineSerializer(serializers.ModelSerializer):
     type = serializers.RelatedField(read_only=True)
 

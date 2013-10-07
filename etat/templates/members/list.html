@@ -36,7 +36,7 @@
     <h3>
         {% trans "Roles" %}
     </h3>
-    <select id="roles-filter" class="form-control chosen-select" data-placeholder="{% trans 'All' %}" multiple>
+    <select id="roles-filter" class="form-control" data-placeholder="{% trans 'All' %}" multiple>
       {% for role in roles %}
         <option value="{{ role.id }}">{{ role }}</option>
       {% endfor %}

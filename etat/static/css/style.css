@@ -82,6 +82,10 @@ h1 a:hover, h2 a:hover, h3 a:hover {
     display: none;
 }
 
+#roles .chose .form-group {
+    width: 100%;
+}
+
 /*
 body {
     padding-top: 60px;
@@ -112,6 +116,18 @@ body {
     border-radius: 4px;
 }
 
+.chosen-container-single .chosen-single {
+    padding: 2px 0 2px 8px;
+}
+
+.chosen-container-single .chosen-single div b {
+    background-position: 0 4px;
+}
+
+.chosen-container-active.chosen-with-drop .chosen-single div b {
+    background-position: -18px 4px;
+}
+
 /* bootstrap theming */
 
 @media (max-width: 979px) {
@@ -137,3 +153,11 @@ body {
     padding-bottom: 10px;
 }
 
+.modal-footer {
+    margin-top: 0;
+}
+
+table .alert {
+    padding: 5px 10px;
+    margin-bottom: 0;
+}
