@@ -20,7 +20,8 @@ class Member(models.Model):
     portrait = ImageField(_('portrait'), upload_to='members',
         null=True, blank=True)
 
-    gender = models.CharField(_('gender'), max_length=2, choices=GENDER_CHOICES)
+    gender = models.CharField(_('gender'), max_length=2, choices=GENDER_CHOICES,
+        default='m')
     birthday = models.DateField(_('birthday'), null=True, blank=True)
 
     email = models.EmailField(_('email'), max_length=100, blank=True)

@@ -19,6 +19,11 @@ class MemberForm(forms.ModelForm):
     class Meta:
         model = Member
         exclude = ('departments',)
+        widgets = {
+            'gender': forms.RadioSelect(
+                attrs={'class':'btn-group'}
+            ),
+        }
 
 
 class RoleInlineForm(forms.ModelForm):
@@ -27,10 +32,6 @@ class RoleInlineForm(forms.ModelForm):
 
     class Meta:
         model = Role
-        widgets = {
-            'start': forms.DateInput(attrs={'class': 'input-sm datepicker'}),
-            'end': forms.DateInput(attrs={'class': 'input-sm datepicker'}),
-        }
 
 
 class RequireRoleFormset(BaseInlineFormSet):

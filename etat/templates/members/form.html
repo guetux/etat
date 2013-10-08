@@ -44,7 +44,23 @@
                     {{ form.scout_name|bootstrap }}
                     {{ form.first_name|bootstrap }}
                     {{ form.last_name|bootstrap }}
-                    {{ form.gender|bootstrap }}
+                    <div class="form-group">
+                        <label class="control-label">
+                            {{ form.gender.label }}
+                        </label>
+                        <div class="btn-group full" data-toggle="buttons">
+                            <label class="btn btn-default half">
+                              <input type="radio" name="gender" value="m">
+                              <i class="icon-male"></i>
+                              Gentleman
+                            </label>
+                            <label class="btn btn-default half" >
+                              <input type="radio" name="gender" value="f" >
+                              <i class="icon-female"></i>
+                              Lady
+                            </label>
+                        </div>
+                    </div>
                     {{ form.birthday|bootstrap }}
                 </div>
                 <div class="col-md-6">
@@ -58,17 +74,23 @@
             <div class="form-horizontal">
                 {{ address_formset.management_form }}
                 {% for address in address_formset %}
-                  {% if forloop.counter0|divisibleby:2  %}
-                    <div class="row">
-                  {% endif %}
-
-                    <div class="col-md-6 {% if forloop.last and not address.errors %}extra{% endif %}">
-                        {{ address|bootstrap_horizontal }}
+                    <div class="row space {% if forloop.last %}extra{% endif %}">
+                        {% for field in address.hidden_fields %}
+                            {{ field }}
+                        {% endfor %}
+                        <div class="col-md-6">
+                            {{ address.street|bootstrap_horizontal }}
+                            {{ address.postal_code|bootstrap_horizontal }}
+                            {{ address.country|bootstrap_horizontal }}
+                            {{ address.main|bootstrap_horizontal }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ address.addition|bootstrap_horizontal }}
+                            {{ address.city|bootstrap_horizontal }}
+                            {{ address.phone|bootstrap_horizontal }}
+                            {{ address.DELETE|bootstrap_horizontal }}
+                        </div>
                     </div>
-
-                  {% if forloop.counter|divisibleby:2 or forloop.last %}
-                    </div>
-                  {% endif %}
                 {% endfor %}
             </div>
         </div>
@@ -144,6 +166,8 @@
         $('.member-tab-nav a:first').tab('show');
     {% endif %}
 
+    $('input[name=gender][value={{ form.gender.value }}]').click();
+
     $('#add-address').click(function () {
         $('a[href=#addresses]').tab('show');
         $('#addresses .extra').fadeIn();
@@ -184,7 +208,7 @@
         $('input[name$=main][id!='+this.id+']').prop('checked', false);
     })
 
-    $(".member-form select").chosen({width: '80%'});
+    $(".member-form select").chosen({width: '100%'});
     $(".datepicker").datepicker({format: 'dd.mm.yyyy'});
 </script>
 
