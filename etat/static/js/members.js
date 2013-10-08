@@ -102,7 +102,7 @@ $(function () {
         }
     });
 
-    // Edit actions
+    // Actions
     var $modal = $('#ajax-modal');
     function load_modal(url, options) {
         $('body').modalmanager('loading');
@@ -110,6 +110,10 @@ $(function () {
             $modal.modal(options);
         });
     }
+
+    $('#add-member').on('click', function () {
+        load_modal('add/', {width: '900px'});
+    });
 
     $( "#memberlist").on("click", ".detail", function() {
         var id = $(this).parents('tr').find('td.id').text();
@@ -124,7 +128,7 @@ $(function () {
     });
 
 
-    // Edit form handling
+    // Form handling
 
     $('#ajax-modal').on("submit", '.member-form', function() {
         $(this).ajaxSubmit({

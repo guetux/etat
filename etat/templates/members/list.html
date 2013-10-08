@@ -11,7 +11,7 @@
     <div id="department_tree" class="space scrollbox">
       <ul>
       {% recursetree departments %}
-        <li id="{{ node.id }}">
+        <li id="{{ node.id }}" data-default_role="{{ node.default_role.id }}">
           <a href="?d={{ node.id }}">
             <i class="icon-group"></i>
             {{ node.name }}
@@ -63,7 +63,7 @@
         <div class="col-md-4">
             <input type="search" class="search form-control" placeholder="{% trans 'search' %}" />
         </div>
-        <div class="col-md-2 col-md-offset-6">
+        <div class="col-md-2 col-md-offset-1 ">
           <div class="gender-filter btn-group full" data-toggle="buttons">
             <label class="btn btn-default half">
               <input type="checkbox" name="m">
@@ -74,6 +74,12 @@
               <i class="icon-female"></i>
             </label>
           </div>
+        </div>
+        <div class="col-md-2 col-md-offset-3">
+            <button id="add-member" class="btn btn-success pull-right">
+              <i class="icon-plus-sign"></i>
+              {% trans "New" %}
+            </button>
         </div>
       </div>
       <table id="memberlist" class="table table-striped">

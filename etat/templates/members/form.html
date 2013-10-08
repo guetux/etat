@@ -2,12 +2,17 @@
 {% load i18n bootstrap %}
 
 {% block title %}
-    {{ member.fullname }}
-    {% if member.scout_name %}v/o {{ member.scout_name}}{% endif %}
+    {% if member %}
+        {{ member.fullname }}
+        {% if member.scout_name %}v/o {{ member.scout_name}}{% endif %}
+    {% else %}
+        {% trans "Add new member" %}
+    {% endif %}
 {% endblock %}
 
 {% block content %}
-<form action="{% url 'member_edit' m_id=member.id %}" method="post" enctype="multipart/form-data" class="member-form">
+<form action="{{ request.path }}" method="post" enctype="multipart/form-data"
+    class="member-form {% if member %} edit {% else %} add {% endif %}">
     {% csrf_token %}
 
     <ul class="nav nav-tabs member-tab-nav">
@@ -114,7 +119,7 @@
 {% endblock %}
 
 {% block footer %}
-<div class="modal-footer">
+<div class="modal-footer {% if member %} edit {% else %} add {% endif %}">
     <button id="add-address" class="btn btn-success pull-left">
         {% trans "Add Address" %}
     </button>
@@ -152,6 +157,28 @@
         $(this).prop('disabled', true);
         return false;
     })
+
+    function currentDate() {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1;
+        var yyyy = today.getFullYear();
+        return dd + '.' + mm + '.' + yyyy;
+    }
+
+    // // preselect new role deparmtent and type (if possible) for new roles
+    if ($('.member-form').hasClass('add')) {
+        var deptree = jQuery.jstree._reference('#department_tree');
+        var selected = _(deptree.get_selected()).first();
+        if (selected) {
+            var dep = $(selected);
+            var id = dep.attr('id');
+            var default_role = dep.data('default_role');
+            $('#roles .extra select[name$=department]:first').val(id);
+            $('#roles .extra select[name$=type]:first').val(default_role);
+            $('#roles .extra input[name$=start]:first').val(currentDate());
+        }
+    }
 
     $('input[name$=main]').change(function (e) {
         $('input[name$=main][id!='+this.id+']').prop('checked', false);

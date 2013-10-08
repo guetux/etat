@@ -26,6 +26,9 @@ class Department(MPTTModel):
     logo = models.ImageField(_('logo'), upload_to='departments',
         null=True, blank=True)
 
+    default_role = models.ForeignKey('members.RoleType', null=True, blank=True,
+        verbose_name=_('default role'), related_name='+')
+
     order = models.PositiveIntegerField()
     parent = TreeForeignKey('self', null=True, blank=True,
         related_name='children')
