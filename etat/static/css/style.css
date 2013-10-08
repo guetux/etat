@@ -7,6 +7,10 @@
 .scrollbox { overflow: auto; }
 .template { display: none; }
 
+.align-left { text-align: left; }
+.align-center { text-align: center }
+.align-right { text-align: right; }
+
 .full { width: 100%; }
 .half { width: 50%; }
 
@@ -35,6 +39,9 @@ h1 a:hover, h2 a:hover, h3 a:hover {
     text-decoration: none;
 }
 
+ul {
+    padding-left: 1.2em;
+}
 
 /* Member list */
 
@@ -156,6 +163,10 @@ body {
 .navbar-nav > li > a {
     padding-top: 10px;
     padding-bottom: 10px;
+}
+
+.modal .btn-group {
+    position: static;
 }
 
 .modal-footer {

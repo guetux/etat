@@ -103,14 +103,6 @@ $(function () {
     });
 
     // Actions
-    var $modal = $('#ajax-modal');
-    function load_modal(url, options) {
-        $('body').modalmanager('loading');
-        $modal.load(url, '', function(){
-            $modal.modal(options);
-        });
-    }
-
     $('#add-member').on('click', function () {
         load_modal('add/', {width: '900px'});
     });
@@ -118,7 +110,7 @@ $(function () {
     $( "#memberlist").on("click", ".detail", function() {
         var id = $(this).parents('tr').find('td.id').text();
         var url = '/members/' + id + '/';
-        load_modal(url, {width: '60%'});
+        load_modal(url, {width: '700px'});
     });
 
     $( "#memberlist").on("click", ".edit", function() {
@@ -128,19 +120,39 @@ $(function () {
     });
 
 
-    // Form handling
+    // Modal handling
+    var $modal = $('#ajax-modal');
 
-    $('#ajax-modal').on("submit", '.member-form', function() {
+    function load_modal(url, options) {
+        $('body').modalmanager('loading');
+        $modal.load(url, function(){
+            $modal.modal(options);
+        });
+    }
+
+    $('#ajax-modal').on('click', '.modal_link', function() {
+        var url = $(this).attr('href');
+            new_width = $(this).data('width') || '900px';
+
+        $modal.load(url, function() {
+            $modal.data('modal').options.width = new_width;
+            $modal.modal('layout');
+        });
+        return false;
+    });
+
+    $('#ajax-modal').on('submit', 'form', function() {
+        $modal.modal('loading');
         $(this).ajaxSubmit({
             target: '#ajax-modal',
             success: function (res, status, xhr) {
-                if (xhr.status == 201) {
+                if (xhr.status == 204) {
                     load_members();
                     $modal.modal('hide');
                 }
             },
             error: function(res) {
-                $modal.html('<pre>'+res.responseText+'</p>');
+                $modal.html('<pre>'+res.responseText+'</pre>');
             }
         });
         return false;

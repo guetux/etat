@@ -7,33 +7,35 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-xs-4">
-        {% thumbnail member.portrait "x120" as im %}
-            <img src="{{ im.url }}">
-        {% empty %}
-            <p>{% trans "No image" %}</p>
-        {% endthumbnail %}
-    </div>
-    <div class="col-xs-4">
-        <dt>{% trans "birthday" %}</dt>
-            <dd>{{ member.birthday|default:'?' }}</dd>
-        <dt>{% trans "Email" %}</dt>
-            <dd>{{ member.email|default:'?' }}</dd>
-        <dt>{% trans "Mobile" %}</dt>
-            <dd>{{ member.mobile|default:'?' }}</dd>
-    </div>
-    <div class="col-xs-4">
-        {% with member.address as adr %}
-            <dt>{% trans "Address" %}</dt>
-            <dd>{{ adr.street }}<br>
-                {% if adr.addition %}{{ adr.addition }}<br>{% endif %}
-                {{ adr.postal_code }} {{ adr.city }}<br>
-                {% if adr.country != 'CH' %}
-                    {{ adr.get_country_display }}
-                {% endif %}
-            </dd>
-        {% endwith %}
+<div class="modal-body">
+    <div class="row">
+        <div class="col-xs-4">
+            {% thumbnail member.portrait "x120" as im %}
+                <img src="{{ im.url }}">
+            {% empty %}
+                <p>{% trans "No image" %}</p>
+            {% endthumbnail %}
+        </div>
+        <div class="col-xs-4">
+            <dt>{% trans "birthday" %}</dt>
+                <dd>{{ member.birthday|default:'?' }}</dd>
+            <dt>{% trans "Email" %}</dt>
+                <dd>{{ member.email|default:'?' }}</dd>
+            <dt>{% trans "Mobile" %}</dt>
+                <dd>{{ member.mobile|default:'?' }}</dd>
+        </div>
+        <div class="col-xs-4">
+            {% with member.address as adr %}
+                <dt>{% trans "Address" %}</dt>
+                <dd>{{ adr.street }}<br>
+                    {% if adr.addition %}{{ adr.addition }}<br>{% endif %}
+                    {{ adr.postal_code }} {{ adr.city }}<br>
+                    {% if adr.country != 'CH' %}
+                        {{ adr.get_country_display }}
+                    {% endif %}
+                </dd>
+            {% endwith %}
+        </div>
     </div>
 </div>
 {% endblock %}

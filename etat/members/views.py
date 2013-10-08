@@ -1,7 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 
-from ..departments.models import Department
+from etat.utils.deletion import deletion_tree
+from etat.departments.models import Department
 
 from .models import Member, RoleType
 from .forms import MemberForm, AddressFormSet, RoleFormSet
@@ -41,7 +42,7 @@ def member_add(request):
             if address_formset.is_valid() and roles_formset.is_valid():
                 address_formset.save()
                 roles_formset.save()
-                return HttpResponse('Saved', status=201)
+                return HttpResponse('Saved', status=204)
     else:
         form = MemberForm()
         address_formset = AddressFormSet()
@@ -69,7 +70,7 @@ def member_edit(request, m_id):
             form.save()
             address_formset.save()
             roles_formset.save()
-            return HttpResponse('Saved', status=201)
+            return HttpResponse('Saved', status=204)
     else:
         form = MemberForm(instance=member)
         address_formset = AddressFormSet(instance=member)
@@ -85,3 +86,14 @@ def member_edit(request, m_id):
         'roles_formset': roles_formset,
     })
 
+
+def member_delete(request, m_id):
+    member = get_object_or_404(Member, pk=m_id)
+    if request.method == 'POST':
+        member.delete()
+        return HttpResponse('Deleted', status=204)
+
+    return render(request, 'members/delete.html', {
+        'member': member,
+        'to_delete': deletion_tree(member),
+    })

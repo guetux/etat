@@ -116,4 +116,4 @@ class Address(models.Model):
         super(Address, self).save(*args, **kwargs)
 
     def __unicode__(self):
-        return u'%s' % self.member
+        return u'%s, %s %s' % (self.street, self.postal_code, self.city)

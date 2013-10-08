@@ -10,7 +10,7 @@ class ImageWidget(forms.ClearableFileInput):
         output = super(ImageWidget, self).render(name, value, attrs)
         if value and hasattr(value, 'url'):
             try:
-                mini = get_thumbnail(value, 'x172', upscale=False)
+                mini = get_thumbnail(value, '172x172', upscale=False)
             except Exception:
                 pass
             else:

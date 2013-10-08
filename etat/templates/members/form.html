@@ -13,9 +13,10 @@
 {% block content %}
 <form action="{{ request.path }}" method="post" enctype="multipart/form-data"
     class="member-form {% if member %} edit {% else %} add {% endif %}">
+<div class="modal-body">
     {% csrf_token %}
 
-    <ul class="nav nav-tabs member-tab-nav">
+    <ul class="nav nav-tabs member-tab-nav nav-justified">
       <li><a href="#person" data-toggle="tab">
             <i class="icon-user"></i> {% trans "Person" %}</a></li>
       <li><a href="#addresses" data-toggle="tab">
@@ -138,18 +139,30 @@
             {{ form.notes|bootstrap }}
         </div>
     </div>
-{% endblock %}
-
-{% block footer %}
+</div>
 <div class="modal-footer {% if member %} edit {% else %} add {% endif %}">
-    <button id="add-address" class="btn btn-success pull-left">
-        {% trans "Add Address" %}
-    </button>
-    <button id="add-role" class="btn btn-warning pull-left">
-        {% trans "Add Role" %}
-    </button>
-
-    <input type="submit" class="btn btn-primary" value="{% trans 'Save' %}">
+    <div class="row">
+        <div class="col-md-4 align-left">
+            {% url 'member_delete' m_id=member.id as delete_url %}
+            <a href="{{ delete_url }}" class="btn btn-danger modal_link" data-width="500px">
+                <i class="icon-trash"></i>
+                {% trans "Delete" %}
+            </a>
+        </div>
+        <div class="col-md-4 align-center">
+            <button id="add-address" class="btn btn-success">
+                <i class="icon-plus-sign"></i>
+                {% trans "Address" %}
+            </button>
+            <button id="add-role" class="btn btn-warning">
+                <i class="icon-plus-sign"></i>
+                {% trans "Role" %}
+            </button>
+        </div>
+        <div class="col-md-4">
+            <input type="submit" class="btn btn-primary" value="{% trans 'Save' %}">
+        </div>
+    </div>
 </div>
 
 <script>
@@ -211,6 +224,5 @@
     $(".member-form select").chosen({width: '100%'});
     $(".datepicker").datepicker({format: 'dd.mm.yyyy'});
 </script>
-
 </form>
 {% endblock %}

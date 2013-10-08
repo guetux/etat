@@ -17,4 +17,8 @@ urlpatterns = patterns('etat.members.views',
         'member_edit',
         name='member_edit'
     ),
+    url(r'^(?P<m_id>\d+)/delete/$',
+        'member_delete',
+        name='member_delete'
+    ),
 )
