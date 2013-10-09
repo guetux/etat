@@ -71,7 +71,7 @@ var Departments = {
 _.extend(Departments, Backbone.Events);
 
 
-var MemberView = Backbone.View.extend({
+Etat.Views.MemberView = Backbone.View.extend({
 
     events: {
         'selection_changed #department_tree' : "loadMembers",
@@ -182,9 +182,8 @@ function append_roles(members) {
 
 // Kick off things
 $(function () {
-
     Departments.initialize();
-    var memberView = new MemberView({el:$('#member-view')});
+    var memberView = new Etat.Views.MemberView({el:$('#member-view')});
 
     $('#ajax-modal').on('modal-saved', function() {
         memberView.loadMembers();

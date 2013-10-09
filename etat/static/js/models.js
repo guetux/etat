@@ -10,11 +10,6 @@
   };
 })();
 
-window.Etat = {
-    Models: {},
-    Collections: {}
-};
-
 Etat.Models.Member = Backbone.Model.extend({
 
 });

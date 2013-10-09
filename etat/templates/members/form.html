@@ -166,9 +166,7 @@
 </div>
 
 <script>
-    $('.member-tab-nav a').click(function() {
-        $(this).tab('show');
-    })
+    // Stuff that can only be done inline
     {% if form.errors %}
         $('a[href=#person]').tab('show');
     {% elif address_formset.has_errors %}
@@ -181,48 +179,11 @@
 
     $('input[name=gender][value={{ form.gender.value }}]').click();
 
-    $('#add-address').click(function () {
-        $('a[href=#addresses]').tab('show');
-        $('#addresses .extra').fadeIn();
-        $(this).prop('disabled', true);
-        return false;
+    $('.member-tab-nav a').click(function() {
+        $(this).tab('show');
     })
 
-    $('#add-role').click(function () {
-        $('a[href=#roles]').tab('show');
-        $('#roles .extra').fadeIn();
-        $(this).prop('disabled', true);
-        return false;
-    })
-
-    function currentDate() {
-        var today = new Date();
-        var dd = today.getDate();
-        var mm = today.getMonth()+1;
-        var yyyy = today.getFullYear();
-        return dd + '.' + mm + '.' + yyyy;
-    }
-
-    // // preselect new role deparmtent and type (if possible) for new roles
-    if ($('.member-form').hasClass('add')) {
-        var deptree = jQuery.jstree._reference('#department_tree');
-        var selected = _(deptree.get_selected()).first();
-        if (selected) {
-            var dep = $(selected);
-            var id = dep.attr('id');
-            var default_role = dep.data('default_role');
-            $('#roles .extra select[name$=department]:first').val(id);
-            $('#roles .extra select[name$=type]:first').val(default_role);
-            $('#roles .extra input[name$=start]:first').val(currentDate());
-        }
-    }
-
-    $('input[name$=main]').change(function (e) {
-        $('input[name$=main][id!='+this.id+']').prop('checked', false);
-    })
-
-    $(".member-form select").chosen({width: '100%'});
-    $(".datepicker").datepicker({format: 'dd.mm.yyyy'});
+    var memberForm = new Etat.Views.MemberForm({el: $('.member-form')});
 </script>
 </form>
 {% endblock %}
