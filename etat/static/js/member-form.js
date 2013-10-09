@@ -48,7 +48,7 @@ Etat.Views.MemberForm = Backbone.View.extend({
 
         // Initialize chosen and datepicker
         $(".member-form select").chosen({width: '100%'});
-        $(".datepicker").datepicker({format: 'dd.mm.yyyy'});
+        $("input.date").datepicker({format: 'dd.mm.yyyy'});
     }
 });
 

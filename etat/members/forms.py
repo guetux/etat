@@ -32,7 +32,10 @@ class RoleInlineForm(forms.ModelForm):
 
     class Meta:
         model = Role
-
+        widgets = {
+            'start': forms.DateInput(attrs={'class': 'date'}),
+            'end': forms.DateInput(attrs={'class': 'date'}),
+        }
 
 class RequireRoleFormset(BaseInlineFormSet):
     def clean(self):
