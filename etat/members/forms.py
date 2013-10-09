@@ -92,14 +92,14 @@ class ReachabilityForm(forms.ModelForm):
 AddressFormSet = inlineformset_factory(
     models.Member,
     models.Address,
-    extra=1,
+    extra=0,
     formset=OneRequiredFormset
 )
 
 RoleFormSet = inlineformset_factory(
     models.Member,
     models.Role,
-    extra=1,
+    extra=0,
     form=RoleInlineForm,
     formset=OneRequiredFormset
 )
@@ -108,5 +108,5 @@ ReachabilityFormSet = inlineformset_factory(
     models.Member,
     models.Reachability,
     form=ReachabilityForm,
-    extra=1
+    extra=0
 )

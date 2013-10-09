@@ -91,12 +91,12 @@ class Role(models.Model):
 class Address(models.Model):
 
     member = models.ForeignKey(Member, related_name='addresses')
-    main = models.BooleanField(_('main address'))
 
     street = models.CharField(_('street'), max_length=100)
-    postal_code = models.PositiveIntegerField(_('Postal Code'))
+    postal_code = models.PositiveIntegerField(_('post code'))
     city = models.CharField(_('city'), max_length=100)
     country = CountryField(_('country'), default='CH')
+    main = models.BooleanField(_('main address'))
 
     class Meta:
         verbose_name = _('Address')

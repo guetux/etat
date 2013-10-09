@@ -84,8 +84,16 @@ ul {
     padding: 20px 0;
 }
 
-.edit .formset .extra {
+.formset .row {
+    padding-top: 10px;
+}
+
+.formset .checkbox span {
     display: none;
+}
+
+.formset .table th {
+    border: none;
 }
 
 .modal-footer.add #add-address,
@@ -173,7 +181,10 @@ body {
     margin-top: 0;
 }
 
-table .alert {
-    padding: 5px 10px;
-    margin-bottom: 0;
+table .form-group {
+    margin: 0;
+}
+
+.deleting {
+    background-color: #f2dede;
 }

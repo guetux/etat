@@ -93,7 +93,7 @@ def member_edit(request, m_id):
     else:
         form = MemberForm(instance=member)
         address_formset = AddressFormSet(instance=member)
-        roles_formset = RoleFormSet(instance=member)
+        roles_formset = RoleFormSet(instance=member,)
         reachability_formset = ReachabilityFormSet(instance=member)
 
     return render(request, 'members/form.html', {

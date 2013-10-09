@@ -9,3 +9,7 @@ def form_header(form):
 @register.inclusion_tag('partials/_formset_errors.html')
 def formset_errors(formset):
     return {'formset': formset}
+
+@register.inclusion_tag('partials/_formset_table_rows.html')
+def formset_table_rows(formset):
+    return {'formset': formset}
