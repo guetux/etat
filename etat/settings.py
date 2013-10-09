@@ -1,7 +1,6 @@
 import os
 import sys
 import dj_database_url
-from memcacheify import memcacheify
 
 WEBAPP_DIR = os.path.dirname(os.path.abspath(__file__))
 APP_BASEDIR = os.path.abspath(os.path.join(WEBAPP_DIR, os.path.pardir))
@@ -9,7 +8,7 @@ APP_BASEDIR = os.path.abspath(os.path.join(WEBAPP_DIR, os.path.pardir))
 DEBUG = os.getenv('DEBUG_MODE', 'true') == 'true'
 TEMPLATE_DEBUG = DEBUG
 
-ALLOWED_HOSTS = ['localhost', '.herokuapp.com', '.heroku.feinheit.ch']
+ALLOWED_HOSTS = ['localhost']
 
 ADMINS = (
     ('Stefan Reinhard / Chili', 'chili@gloggi.ch'),
@@ -43,36 +42,26 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-
 MEDIA_ROOT = os.path.join(APP_BASEDIR, 'uploads')
 MEDIA_URL = '/uploads/'
 
-if 'runserver' not in sys.argv:
-    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
-
 STATIC_ROOT = os.path.join(APP_BASEDIR, 'static')
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = (os.path.join(WEBAPP_DIR, 'static'),)
 
 ROOT_URLCONF = 'etat.urls'
 
-CACHES = memcacheify()
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cached_db'
 
 if 'runserver' in sys.argv:
     EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-else:
-    EMAIL_HOST = os.environ.get('MAILGUN_SMTP_SERVER')
-    EMAIL_HOST_USER = os.environ.get('MAILGUN_SMTP_LOGIN')
-    EMAIL_HOST_PASSWORD = os.environ.get('MAILGUN_SMTP_PASSWORD')
-    EMAIL_PORT = os.environ.get('MAILGUN_SMTP_PORT', 587)
-    EMAIL_USE_TLS = True
-
 
 DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'etat@gloggi.ch')
 SERVER_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'etat@gloggi.ch')
@@ -108,7 +97,6 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
 
     'raven.contrib.django.raven_compat',
-    'storages',
     'south',
     'mptt',
     'django_reset',
