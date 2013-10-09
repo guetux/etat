@@ -3,7 +3,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
 from django.utils.safestring import mark_safe
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 
 from mptt.fields import TreeNodeChoiceField
 
@@ -46,10 +46,10 @@ class OneRequiredFormset(BaseInlineFormSet):
             new = len(self.save_new_objects(commit=False))
             deleted = len(self.deleted_forms)
             if initial + new - deleted == 0:
-                msg = _(u'%(parent)s must have at least one %(child)s!' % {
+                msg = _(u'%(parent)s must have at least one %(child)s!') % {
                     'parent': self.instance._meta.verbose_name,
                     'child': self.model._meta.verbose_name
-                })
+                }
                 raise ValidationError(msg)
 
 
