@@ -140,13 +140,13 @@ Etat.Views.MemberView = Backbone.View.extend({
 
     // Reload member data form server an display them in member table
     loadMembers: function() {
-        $.ajax({
-            dataType: 'json',
-            type: 'GET',
-            url: '/api/members/',
+        this.$el.find('input[type=search]').val('');
+        var members = new Etat.Collections.Members();
+
+        members.fetch({
             data: this.collectFilters(),
             success: function(members) {
-                $('#member-list').find('input[type=search]').val('');
+                members = members.toJSON();
                 MemberList.clear();
                 if (members.length) {
                     append_roles(members);
