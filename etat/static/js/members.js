@@ -1,14 +1,47 @@
 
 // Global members list$
 
-MemberView = {
+// list.js table of all members
+var MemberList = new List('member-list', {
+            valueNames: ['first_name', 'last_name', 'scout_name']
+});
 
-    memberList: new List('member-list', {
-        valueNames: ['first_name', 'last_name', 'scout_name']
-    }),
+// department tree compontent. This mainly eliminates the uglyness of jstree
+var Departments = {
+    tree : undefined, // reference to js tree
 
-    departmentTree: undefined,
-    initDepartmentTree: function() {
+    // Get a list of all selected departments
+    get_selected: function() {
+        ids = [];
+        _.each(Departments.tree.get_checked(null, true), function(e) {
+            ids.push(parseInt(e.id, 10));
+        });
+
+        // Use selection if no checkbox is set
+        if (ids.length === 0) {
+            _.each(Departments.tree.get_selected(), function(e) {
+                ids.push(parseInt(e.id, 10));
+            });
+        }
+        return ids;
+    },
+
+    // Enable or disable the checkbox selector
+    toggleDeepSelector: function () {
+        if ($('#checkselector').bootstrapSwitch('status')) {
+            Departments.tree.show_checkboxes();
+        } else {
+            Departments.tree.uncheck_all();
+            Departments.tree.hide_checkboxes();
+            $('#department_tree').trigger('selection_changed');
+        }
+    },
+
+    initialize: function() {
+        function selection_changed() {
+            $('#department_tree').trigger('selection_changed');
+        }
+
         $('#department_tree').jstree({
             plugins: ["themes", "html_data", "ui", "cookies", "checkbox"],
             themes: {
@@ -20,148 +53,140 @@ MemberView = {
                 animation: 200,
             }
         }).bind({
-            'select_node.jstree': this.loadMembers,
-            'deselect_node.jstree': this.loadMembers,
-            'check_node.jstree': this.loadMembers,
-            'uncheck_node.jstree': this.loadMembers,
+            'select_node.jstree': selection_changed,
+            'deselect_node.jstree': selection_changed,
+            'check_node.jstree': selection_changed,
+            'uncheck_node.jstree': selection_changed,
             'loaded.jstree': function() {
-                console.log('tree is read!');
-                var tree = $.jstree._reference('#department_tree');
-                tree.hide_checkboxes();
-                MemberView.departmentTree = tree;
+                // keep reference
+                Departments.tree = $.jstree._reference('#department_tree');
+                Departments.tree.hide_checkboxes();
             }
         });
+
+        $("#checkselector").on('switch-change', Departments.toggleDeepSelector);
     },
 
-    initialize: function() {
-        this.initDepartmentTree();
-        this.bindEvents();
+};
+_.extend(Departments, Backbone.Events);
+
+
+var MemberView = Backbone.View.extend({
+
+    events: {
+        'selection_changed #department_tree' : "loadMembers",
+        "change #roles-filter"               : "loadMembers",
+        "change .status-filter input"        : "loadMembers",
+        "change .gender-filter"              : "filterByGender",
+        "click .member-add"                  : "addMember",
+        "click .member-detail"               : "showMember",
+        "click .member-edit"                 : "editMember",
     },
 
-    bindEvents: function() {
-        $('#checkselector').on('switch-change', MemberView.toggleDeepSelector);
-        $('#roles-filter').change(MemberView.loadMembers);
-        $('.status-filter input').change(MemberView.loadMembers);
-        $('.gender-filter input').change(MemberView.filterByGender);
-        $('#add-member').on('click', MemberView.addMember);
-
-        $('#memberlist').on("click", ".detail", function() {
-            var id = $(this).parents('tr').find('td.id').text();
-            MemberView.showMember(id);
-        });
-        $( "#memberlist").on("click", ".edit", function() {
-            var id = $(this).parents('tr').find('td.id').text();
-            MemberView.editMember(id);
-        });
+    memberIdForEvent: function() {
+        return $(event.target).parents('tr').find('td.id').text();
     },
 
-    toggleDeepSelector: function () {
-        if ($('#checkselector').bootstrapSwitch('status')) {
-            MemberView.departmentTree.show_checkboxes();
-        } else {
-            MemberView.departmentTree.uncheck_all();
-            MemberView.departmentTree.hide_checkboxes();
-            MemberView.loadMembers();
-        }
-    },
-
+    // Launch modal to create a new member
     addMember: function() {
         showModal('/members/add/', {width: '900px'});
     },
 
-    showMember: function(id) {
+    // Display short stats of one member
+    showMember: function(event) {
+        var id = this.memberIdForEvent(event);
         showModal('/members/' + id + '/', {width: '700px'});
     },
 
-    editMember: function(id) {
+    // Start editing a member
+    editMember: function(event) {
+        var id = this.memberIdForEvent(event);
         showModal('/members/' + id + '/edit/', {width: '900px'});
     },
 
+    // File male or females in member list
     filterByGender: function() {
         var show_m = $('input[name=m]').prop('checked'),
             show_f = $('input[name=f]').prop('checked');
         if (!show_m && !show_f) {
-            MemberView.memberList.filter();
+            MemberList.filter();
         } else {
-            MemberView.memberList.filter(function(member) {
+            MemberList.filter(function(member) {
                 var gender = member.values().gender;
                 return gender == 'm' && show_m || gender == 'f' && show_f;
             });
         }
     },
 
-    loadMembers: function() {
-        // Reload members for selected departments
-        var ids = [],
-            data = {};
+    // Get all active filters to reload member list
+    collectFilters: function() {
+        var filterArgs = {};
+        filterArgs['departments'] = Departments.get_selected();
 
-        // Reinitialize for now
-        if (MemberView.departmentTree === undefined) {
-            console.log('not ready to load members yet');
-            return;
-        }
-
-        // Use checked departmens if checkbox is enabled
-        _.each(MemberView.departmentTree.get_checked(null, true), function(e) {
-            ids.push(parseInt(e.id, 10));
-        });
-
-        // Use selection if no checkbox is set
-        if (ids.length === 0) {
-            _.each(MemberView.departmentTree.get_selected(), function(e) {
-                ids.push(parseInt(e.id, 10));
-            });
-        }
-
-        data['departments'] = ids;
-
-        // Collect filters
-        data['roles'] = $('#roles-filter').val();
+        filterArgs['roles'] = $('#roles-filter').val();
 
         var active = $('input[name=active]').prop('checked'),
             inactive = $('input[name=inactive]').prop('checked');
         if (active && !inactive) {
-            data['status'] = 'active';
+            filterArgs['status'] = 'active';
         } else if (inactive && !active) {
-            data['status'] = 'inactive';
+            filterArgs['status'] = 'inactive';
         } else if (!active && !inactive) {
-            data['status'] = 'none';
+            filterArgs['status'] = 'none';
         }
 
+        return filterArgs;
+    },
+
+    // Reload member data form server an display them in member table
+    loadMembers: function() {
         $.ajax({
             dataType: 'json',
             type: 'GET',
             url: '/api/members/',
-            data: data,
-            success: function(data) {
+            data: this.collectFilters(),
+            success: function(members) {
                 $('#member-list').find('input[type=search]').val('');
-                MemberView.memberList.clear();
-                if (data.length) {
-                    MemberView.append_roles(data, ids, active, inactive);
-                    MemberView.memberList.add(data);
-                    MemberView.memberList.search();
-                    MemberView.memberList.sort('id', { asc: true });
+                MemberList.clear();
+                if (members.length) {
+                    append_roles(members);
+                    MemberList.add(members);
+                    MemberList.search();
+                    MemberList.sort('id', { asc: true });
                 }
-
             }
         });
     },
+});
 
-    append_roles: function(members, deparment_ids, show_active, show_inactive) {
-        _.each(members, function(m) {
-            roles = [];
-            _.each(m.roles, function(r) {
-                if (_.indexOf(deparment_ids, r.department) != -1) {
-                    if (r.active && show_active || !r.active && show_inactive) {
-                        roles.push(r.type);
-                    }
+
+
+// Attaches a list of all roles to every member
+function append_roles(members) {
+    var selected_departments = Departments.get_selected();
+        show_active = $('input[name=active]').prop('checked');
+        show_inactive = $('input[name=inactive]').prop('checked');
+
+    _.each(members, function(m) {
+        roles = [];
+        _.each(m.roles, function(r) {
+            if (_.indexOf(selected_departments, r.department) != -1) {
+                if (r.active && show_active || !r.active && show_inactive) {
+                    roles.push(r.type);
                 }
-            });
-            m.roles_display = roles.join(', ');
+            }
         });
-    }
-};
+        m.roles_display = roles.join(', ');
+    });
+}
 
+// Kick off things
 $(function () {
-    MemberView.initialize();
+
+    Departments.initialize();
+    var memberView = new MemberView({el:$('#member-view')});
+
+    $('#ajax-modal').on('modal-saved', function() {
+        memberView.loadMembers();
+    });
 });

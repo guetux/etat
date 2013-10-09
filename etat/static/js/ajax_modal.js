@@ -25,7 +25,7 @@ $('#ajax-modal').on('submit', 'form', function() {
         target: '#ajax-modal',
         success: function (res, status, xhr) {
             if (xhr.status == 204) {
-                load_members();
+                $('#ajax-modal').trigger('modal-saved');
                 $('#ajax-modal').modal('hide');
             }
         },

@@ -5,60 +5,60 @@
   <script src="{{ STATIC_URL }}js/members.js"></script>
 {% endblock %}
 
-{% block sidebar %}
-  <div class="well well-small">
-    <h3>{% trans "Departments" %}</h3>
-    <div id="department_tree" class="space scrollbox">
-      <ul>
-      {% recursetree departments %}
-        <li id="{{ node.id }}" data-default_role="{{ node.default_role.id }}">
-          <a href="?d={{ node.id }}">
-            <i class="icon-group"></i>
-            {{ node.name }}
-          </a>
-          {% if not node.is_leaf_node %}
-            <ul>
-              {{ children }}
-            </ul>
-          {% endif %}
-        </li>
-      {% endrecursetree %}
-      </ul>
-    </div>
-
-    <div class="clearfix space">
-        <span>{% trans "Deep selector" %}</span>
-        <div  id="checkselector"  class="make-switch switch-mini pull-right">
-          <input type="checkbox" />
-        </div>
-    </div>
-
-    <h3>
-        {% trans "Roles" %}
-    </h3>
-    <select id="roles-filter" class="form-control" data-placeholder="{% trans 'All' %}" multiple>
-      {% for role in roles %}
-        <option value="{{ role.id }}">{{ role }}</option>
-      {% endfor %}
-    </select>
-    <div class="space"></div>
-    <div class="status-filter btn-group full" data-toggle="buttons">
-      <label class="btn btn-default btn-sm active half">
-        <input type="checkbox" name="active" checked>
-        {% trans "Active" %}
-      </label>
-      <label class="btn btn-default btn-sm half">
-        <input type="checkbox" name="inactive">
-        {% trans "Inactive" %}
-      </label>
-    </div>
-
-  </div>
-{% endblock %}
-
-
 {% block content %}
-  <div id="member-list">
+<div id="member-view" class="row">
+  <div id="sidebar" class="col-md-3">
+    <div class="well well-small">
+      <h3>{% trans "Departments" %}</h3>
+      <div id="department_tree" class="space scrollbox">
+        <ul>
+        {% recursetree departments %}
+          <li id="{{ node.id }}" data-default_role="{{ node.default_role.id }}">
+            <a href="?d={{ node.id }}">
+              <i class="icon-group"></i>
+              {{ node.name }}
+            </a>
+            {% if not node.is_leaf_node %}
+              <ul>
+                {{ children }}
+              </ul>
+            {% endif %}
+          </li>
+        {% endrecursetree %}
+        </ul>
+      </div>
+
+      <div class="clearfix space">
+          <span>{% trans "Deep selector" %}</span>
+          <div  id="checkselector"  class="make-switch switch-mini pull-right">
+            <input type="checkbox" />
+          </div>
+      </div>
+
+      <h3>
+          {% trans "Roles" %}
+      </h3>
+      <select id="roles-filter" class="form-control" data-placeholder="{% trans 'All' %}" multiple>
+        {% for role in roles %}
+          <option value="{{ role.id }}">{{ role }}</option>
+        {% endfor %}
+      </select>
+      <div class="space"></div>
+      <div class="status-filter btn-group full" data-toggle="buttons">
+        <label class="btn btn-default btn-sm active half">
+          <input type="checkbox" name="active" checked>
+          {% trans "Active" %}
+        </label>
+        <label class="btn btn-default btn-sm half">
+          <input type="checkbox" name="inactive">
+          {% trans "Inactive" %}
+        </label>
+      </div>
+    </div>
+  </div> <!-- sidebar -->
+
+  <div id="member-list" class="col-md-9">
+      <!-- top buttons -->
       <div class="row space">
         <div class="col-md-4">
             <input type="search" class="search form-control" placeholder="{% trans 'search' %}" />
@@ -76,13 +76,15 @@
           </div>
         </div>
         <div class="col-md-2 col-md-offset-3">
-            <button id="add-member" class="btn btn-success pull-right">
+            <button class="btn btn-success pull-right member-add">
               <i class="icon-plus-sign"></i>
               {% trans "New" %}
             </button>
         </div>
       </div>
-      <table id="memberlist" class="table table-striped">
+
+      <!-- member table -->
+      <table class="table table-striped">
         <thead>
           <tr>
             <th class="sort" data-sort="scout_name">{% trans 'scout name' %}</th>
@@ -100,10 +102,10 @@
               <td class="last_name"></td>
               <td class="roles_display"></td>
               <td class="edit-buttons">
-                <button class="btn btn-xs btn-info detail">
+                <button class="btn btn-xs btn-info member-detail">
                   <i class="icon-eye-open"></i>
                 </button>
-                <button class="btn btn-xs btn-primary edit">
+                <button class="btn btn-xs btn-primary member-edit">
                   <i class="icon-pencil"></i>
                 </button>
 
@@ -112,4 +114,5 @@
         </tbody>
       </table>
   </div>
+</div>
 {% endblock %}
