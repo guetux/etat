@@ -1,5 +1,5 @@
 {% extends "modal.html" %}
-{% load i18n bootstrap %}
+{% load i18n bootstrap partials %}
 
 {% block title %}
     {% if member %}
@@ -27,18 +27,7 @@
             <i class="icon-file-text"></i> {% trans "Notes" %}</a></li>
     </ul>
     <div class="tab-content member-tabs">
-        {% if form.non_field_errors %}
-            <div class="alert alert-danger">
-                {% for non_field_error in form.non_field_errors %}
-                     {{ non_field_error }}
-                {% endfor %}
-            </div>
-        {% endif %}
-
-        {% for field in form.hidden_fields %}
-            {{ field }}
-        {% endfor %}
-
+        {% form_header form %}
         <div class="tab-pane" id="person">
             <div class="row">
                 <div class="col-md-6">
@@ -93,6 +82,7 @@
                         </div>
                     </div>
                 {% endfor %}
+                {% formset_errors address_formset %}
             </div>
         </div>
         <div class="tab-pane formset" id="roles">
@@ -120,19 +110,7 @@
                         </tr>
                     {% endfor %}
                 </table>
-
-                {% for role in roles_formset %}
-                    {% if role.non_field_errors %}
-                        <div class="alert alert-danger">
-                            {{ role.non_field_errors }}
-                        </div>
-                    {% endif %}
-                {% endfor %}
-                {% for non_form_error in roles_formset.non_form_errors %}
-                    <div class="alert alert-danger">
-                        {{ non_form_error }}
-                    </div>
-                {% endfor %}
+                {% formset_errors roles_formset %}
             </div>
         </div>
         <div class="tab-pane" id="notes">
