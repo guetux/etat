@@ -23,6 +23,8 @@
             <i class="icon-envelope"></i> {% trans "Addresses" %}</a></li>
       <li><a href="#roles" data-toggle="tab">
             <i class="icon-shield"></i> {% trans "Roles" %}</a></li>
+      <li><a href="#reachability" data-toggle="tab">
+            <i class="icon-phone"></i> {% trans "Reachability" %}</a></li>
       <li><a href="#notes" data-toggle="tab">
             <i class="icon-file-text"></i> {% trans "Notes" %}</a></li>
     </ul>
@@ -55,8 +57,6 @@
                 </div>
                 <div class="col-md-6">
                     {{ form.portrait|bootstrap }}
-                    {{ form.email|bootstrap }}
-                    {{ form.mobile|bootstrap }}
                 </div>
             </div>
         </div>
@@ -71,13 +71,11 @@
                         <div class="col-md-6">
                             {{ address.street|bootstrap_horizontal }}
                             {{ address.postal_code|bootstrap_horizontal }}
-                            {{ address.country|bootstrap_horizontal }}
                             {{ address.main|bootstrap_horizontal }}
                         </div>
                         <div class="col-md-6">
-                            {{ address.addition|bootstrap_horizontal }}
+                            {{ address.country|bootstrap_horizontal }}
                             {{ address.city|bootstrap_horizontal }}
-                            {{ address.phone|bootstrap_horizontal }}
                             {{ address.DELETE|bootstrap_horizontal }}
                         </div>
                     </div>
@@ -86,32 +84,54 @@
             </div>
         </div>
         <div class="tab-pane formset" id="roles">
-            <div class="form-inline">
-                {{ roles_formset.management_form }}
-                <table class="table">
-                    <tr>
-                        <th width="25%">{% trans "Department" %}</th>
-                        <th width="25%">{% trans "Role" %}</th>
-                        <th width="20%">{% trans "start" %}</th>
-                        <th width="20%">{% trans "end" %}</th>
-                        <th width="10%">{% trans "Delete" %}</th>
-                    </tr>
-                    {% for role in roles_formset %}
-                        {% for field in role.hidden_fields %}
-                            {{ field }}
-                        {% endfor %}
-                        <tr class="{% if role.non_field_errors %}danger{% endif %}
-                            {% if forloop.last and not role.errors %}extra{% endif %}">
-                            <td class="chose">{{ role.department|bootstrap_inline }}</td>
-                            <td class="chose">{{ role.type|bootstrap_inline }}</td>
-                            <td>{{ role.start|bootstrap_inline }}</td>
-                            <td>{{ role.end|bootstrap_inline  }}</td>
-                            <td>{{ role.DELETE }}</td>
-                        </tr>
+            {{ roles_formset.management_form }}
+            <table class="table">
+                <tr>
+                    <th width="25%">{% trans "Department" %}</th>
+                    <th width="25%">{% trans "Role" %}</th>
+                    <th width="20%">{% trans "start" %}</th>
+                    <th width="20%">{% trans "end" %}</th>
+                    <th width="10%"></th>
+                </tr>
+                {% for role in roles_formset %}
+                    {% for field in role.hidden_fields %}
+                        {{ field }}
                     {% endfor %}
-                </table>
-                {% formset_errors roles_formset %}
-            </div>
+                    <tr class="{% if role.non_field_errors %}danger{% endif %}
+                        {% if forloop.last and not role.errors %}extra{% endif %}">
+                        <td class="chose">{{ role.department|bootstrap_inline }}</td>
+                        <td class="chose">{{ role.type|bootstrap_inline }}</td>
+                        <td>{{ role.start|bootstrap_inline }}</td>
+                        <td>{{ role.end|bootstrap_inline  }}</td>
+                        <td>{{ role.DELETE|bootstrap_inline }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {% formset_errors roles_formset %}
+        </div>
+        <div class="tab-pane formset" id="reachability">
+            {{ reachability_formset.management_form }}
+            <table class="table">
+                <tr>
+                    <th width="20%">{% trans "Type" %}</th>
+                    <th width="20%">{% trans "Kind" %}</th>
+                    <th width="50%">{% trans "Value" %}</th>
+                    <th width="10%"></th>
+                </tr>
+                {% for r in reachability_formset %}
+                    {% for field in r.hidden_fields %}
+                        {{ field }}
+                    {% endfor %}
+                    <tr class="{% if r.non_field_errors %}danger{% endif %}
+                        {% if forloop.last and not r.errors %}extra{% endif %}">
+                        <td class="chose">{{ r.type|bootstrap_inline }}</td>
+                        <td class="chose">{{ r.kind|bootstrap_inline }}</td>
+                        <td>{{ r.value|bootstrap_inline }}</td>
+                        <td>{{ r.DELETE|bootstrap_inline }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            {% formset_errors reachability_formset %}
         </div>
         <div class="tab-pane" id="notes">
             {{ form.notes|bootstrap }}
@@ -120,14 +140,14 @@
 </div>
 <div class="modal-footer {% if member %} edit {% else %} add {% endif %}">
     <div class="row">
-        <div class="col-md-4 align-left">
+        <div class="col-md-3 align-left">
             {% url 'member_delete' m_id=member.id as delete_url %}
             <a href="{{ delete_url }}" class="btn btn-danger modal_link" data-width="500px">
                 <i class="icon-trash"></i>
                 {% trans "Delete" %}
             </a>
         </div>
-        <div class="col-md-4 align-center">
+        <div class="col-md-6 align-center">
             <button id="add-address" class="btn btn-success">
                 <i class="icon-plus-sign"></i>
                 {% trans "Address" %}
@@ -136,8 +156,12 @@
                 <i class="icon-plus-sign"></i>
                 {% trans "Role" %}
             </button>
+            <button id="add-reachability" class="btn btn-info">
+                <i class="icon-plus-sign"></i>
+                {% trans "Reachability" %}
+            </button>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
             <input type="submit" class="btn btn-primary" value="{% trans 'Save' %}">
         </div>
     </div>

@@ -24,9 +24,6 @@ class Member(models.Model):
         default='m')
     birthday = models.DateField(_('birthday'), null=True, blank=True)
 
-    email = models.EmailField(_('email'), max_length=100, blank=True)
-    mobile = models.CharField(_('mobile'), max_length=30, blank=True)
-
     notes = models.TextField(_('notes'), blank=True)
 
     departments = models.ManyToManyField('departments.Department',
@@ -97,13 +94,9 @@ class Address(models.Model):
     main = models.BooleanField(_('main address'))
 
     street = models.CharField(_('street'), max_length=100)
-    addition = models.CharField(_('addition'), max_length=100, blank=True)
     postal_code = models.PositiveIntegerField(_('Postal Code'))
     city = models.CharField(_('city'), max_length=100)
     country = CountryField(_('country'), default='CH')
-
-    phone = models.CharField(_('phone'), max_length=30, blank=True)
-
 
     class Meta:
         verbose_name = _('Address')
@@ -117,3 +110,46 @@ class Address(models.Model):
 
     def __unicode__(self):
         return u'%s, %s %s' % (self.street, self.postal_code, self.city)
+
+class Reachability(models.Model):
+
+    TYPE_CHOICES = (
+        ('email',       _('Email')),
+        ('phone',      _('Phone')),
+        ('skype',       _('Skype')),
+        ('facebook',    _('Facebook')),
+        ('twitter',     _('Twitter')),
+    )
+
+    KIND_CHOICES = (
+        ('private', _('Private')),
+        ('work',    _('Work')),
+        ('scout',   _('Scout')),
+        ('other',   _('Other')),
+    )
+
+    member = models.ForeignKey(Member, related_name='reachabilities')
+
+    type = models.CharField(_('type'), max_length=20, choices=TYPE_CHOICES)
+    kind = models.CharField(_('kind'), max_length=20, choices=KIND_CHOICES,
+        blank=True)
+
+    value = models.CharField(_('value'), max_length=100)
+
+    class Meta:
+        verbose_name = _('Reachability')
+        verbose_name_plural = _('Reachabilities')
+
+    def __unicode__(self):
+        return u'%s %s' % (self.type, self.value)
+
+    icons = {
+        'email': 'icon-envelope',
+        'phone': 'icon-phone',
+        'skype': 'icon-skype',
+        'facebook': 'icon-facebook',
+        'twitter': 'icon-twitter',
+    }
+
+    def icon_class(self):
+        return self.icons.get(self.type, 'icon-envelope')

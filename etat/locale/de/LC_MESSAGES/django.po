@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-10-09 17:28+0200\n"
+"POT-Creation-Date: 2013-10-09 18:40+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,7 +26,7 @@ msgstr "Deutsch"
 msgid "English"
 msgstr "Englisch"
 
-#: departments/models.py:8 departments/models.py:22 members/models.py:55
+#: departments/models.py:8 departments/models.py:22 members/models.py:52
 msgid "name"
 msgstr "Name"
 
@@ -42,7 +42,7 @@ msgstr "Einheitstyp"
 msgid "Department types"
 msgstr "Einheitstypen"
 
-#: departments/models.py:24 members/models.py:30
+#: departments/models.py:24 members/models.py:27
 msgid "notes"
 msgstr "Notizen"
 
@@ -58,7 +58,7 @@ msgstr "Logo"
 msgid "default role"
 msgstr "Standard Funktion"
 
-#: departments/models.py:37 templates/members/form.html:93
+#: departments/models.py:37 templates/members/form.html:90
 msgid "Department"
 msgstr "Einheit"
 
@@ -103,93 +103,136 @@ msgstr "Geschlecht"
 msgid "birthday"
 msgstr "Geburtstag"
 
-#: members/models.py:27
-msgid "email"
-msgstr "Email"
-
-#: members/models.py:28
-msgid "mobile"
-msgstr "Mobile"
-
-#: members/models.py:36
+#: members/models.py:33
 msgid "Member"
 msgstr "Mitglied"
 
-#: members/models.py:37 templates/base.html:40
+#: members/models.py:34 templates/base.html:40
 msgid "Members"
 msgstr "Mitglieder"
 
-#: members/models.py:59
+#: members/models.py:56
 msgid "Role type"
 msgstr "Funktionstyp"
 
-#: members/models.py:60
+#: members/models.py:57
 msgid "Role types"
 msgstr "Funktionstypen"
 
-#: members/models.py:72 templates/members/form.html:95
+#: members/models.py:69 templates/members/form.html:92
 msgid "start"
 msgstr "Start"
 
-#: members/models.py:73 templates/members/form.html:96
+#: members/models.py:70 templates/members/form.html:93
 msgid "end"
 msgstr "Ende"
 
-#: members/models.py:76 templates/members/form.html:94
-#: templates/members/form.html.py:137 templates/members/list.html:94
+#: members/models.py:73 templates/members/form.html:91
+#: templates/members/form.html.py:157 templates/members/list.html:94
 msgid "Role"
 msgstr "Funktion"
 
-#: members/models.py:77 templates/members/form.html:25
+#: members/models.py:74 templates/members/form.html:25
 #: templates/members/list.html:40
 msgid "Roles"
 msgstr "Funktionen"
 
-#: members/models.py:81
+#: members/models.py:78
 msgid "Start data has to be before end date!"
 msgstr "Start Datum muss vor dem Ende sein!"
 
-#: members/models.py:84
+#: members/models.py:81
 #, python-format
 msgid "%(type)s at %(department)s"
 msgstr "%(type)s bei %(department)s"
 
-#: members/models.py:97
+#: members/models.py:94
 msgid "main address"
 msgstr "Hauptadresse"
 
-#: members/models.py:99
+#: members/models.py:96
 msgid "street"
 msgstr "Strasse"
 
-#: members/models.py:100
-msgid "addition"
-msgstr "Zusatz"
-
-#: members/models.py:101
+#: members/models.py:97
 msgid "Postal Code"
 msgstr "PLZ"
 
-#: members/models.py:102
+#: members/models.py:98
 msgid "city"
 msgstr "Ort"
 
-#: members/models.py:103
+#: members/models.py:99
 msgid "country"
 msgstr "Land"
 
-#: members/models.py:105
-msgid "phone"
-msgstr "Telefon"
-
-#: members/models.py:109 templates/members/form.html:133
+#: members/models.py:102 templates/members/form.html:153
 #: templates/members/view.html:29
 msgid "Address"
 msgstr "Adresse"
 
-#: members/models.py:110 templates/members/form.html:23
+#: members/models.py:103 templates/members/form.html:23
 msgid "Addresses"
 msgstr "Adressen"
+
+#: members/models.py:117 templates/members/view.html:22
+msgid "Email"
+msgstr "Email"
+
+#: members/models.py:118
+#, fuzzy
+msgid "Phone"
+msgstr "Telefon"
+
+#: members/models.py:119
+msgid "Skype"
+msgstr ""
+
+#: members/models.py:120
+msgid "Facebook"
+msgstr ""
+
+#: members/models.py:121
+msgid "Twitter"
+msgstr ""
+
+#: members/models.py:125
+msgid "Private"
+msgstr ""
+
+#: members/models.py:126
+msgid "Work"
+msgstr ""
+
+#: members/models.py:127
+msgid "Scout"
+msgstr ""
+
+#: members/models.py:128
+msgid "Other"
+msgstr ""
+
+#: members/models.py:133
+#, fuzzy
+msgid "type"
+msgstr "Funktionstyp"
+
+#: members/models.py:134
+msgid "kind"
+msgstr ""
+
+#: members/models.py:137
+msgid "value"
+msgstr ""
+
+#: members/models.py:140 templates/members/form.html:27
+#: templates/members/form.html.py:161
+msgid "Reachability"
+msgstr ""
+
+#: members/models.py:141
+msgid "Reachabilities"
+msgstr ""
 
 #: templates/base.html:34
 msgid "ETAT"
@@ -223,15 +266,27 @@ msgstr "Neues Mitglied hinzufügen"
 msgid "Person"
 msgstr "Person"
 
-#: templates/members/form.html:27
+#: templates/members/form.html:29
 msgid "Notes"
 msgstr "Notizen"
 
-#: templates/members/form.html:97 templates/members/form.html.py:127
+#: templates/members/form.html:116
+msgid "Type"
+msgstr ""
+
+#: templates/members/form.html:117
+msgid "Kind"
+msgstr ""
+
+#: templates/members/form.html:118
+msgid "Value"
+msgstr ""
+
+#: templates/members/form.html:147
 msgid "Delete"
 msgstr "Löschen"
 
-#: templates/members/form.html:141
+#: templates/members/form.html:165
 msgid "Save"
 msgstr "Speichern"
 
@@ -263,10 +318,12 @@ msgstr "Neu"
 msgid "No image"
 msgstr "Kein Bild"
 
-#: templates/members/view.html:22
-msgid "Email"
-msgstr "Email"
-
 #: templates/members/view.html:24
 msgid "Mobile"
+msgstr "Mobile"
+
+msgid "email"
+msgstr "Email"
+
+msgid "mobile"
 msgstr "Mobile"

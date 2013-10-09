@@ -8,34 +8,39 @@
 
 {% block content %}
 <div class="modal-body">
-    <div class="row">
-        <div class="col-xs-4">
+    <table class="table">
+        <tr>
+        <td>
             {% thumbnail member.portrait "x120" as im %}
                 <img src="{{ im.url }}">
             {% empty %}
                 <p>{% trans "No image" %}</p>
             {% endthumbnail %}
-        </div>
-        <div class="col-xs-4">
-            <dt>{% trans "birthday" %}</dt>
-                <dd>{{ member.birthday|default:'?' }}</dd>
-            <dt>{% trans "Email" %}</dt>
-                <dd>{{ member.email|default:'?' }}</dd>
-            <dt>{% trans "Mobile" %}</dt>
-                <dd>{{ member.mobile|default:'?' }}</dd>
-        </div>
-        <div class="col-xs-4">
+        </td>
+        <td>
+            {% for reachability in member.reachabilities.all %}
+            <div class="row">
+                <div class="col-md-1 align-center">
+                    <i class="{{ reachability.icon_class }}"></i>
+                </div>
+                <div class="col-md-11">
+                    {{ reachability.value|urlize }}
+                </div>
+            </div>
+            {% endfor %}
+        </td>
+        <td>
             {% with member.address as adr %}
-                <dt>{% trans "Address" %}</dt>
-                <dd>{{ adr.street }}<br>
+                <strong>{% trans "Address" %}</strong>
+                <p>{{ adr.street }}<br>
                     {% if adr.addition %}{{ adr.addition }}<br>{% endif %}
                     {{ adr.postal_code }} {{ adr.city }}<br>
                     {% if adr.country != 'CH' %}
                         {{ adr.get_country_display }}
                     {% endif %}
-                </dd>
+                </p>
             {% endwith %}
-        </div>
+        </td>
     </div>
 </div>
 {% endblock %}

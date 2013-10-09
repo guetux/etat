@@ -5,7 +5,7 @@ from etat.utils.deletion import deletion_tree
 from etat.departments.models import Department
 
 from .models import Member, RoleType
-from .forms import MemberForm, AddressFormSet, RoleFormSet
+from .forms import MemberForm, AddressFormSet, RoleFormSet, ReachabilityFormSet
 
 
 def member_list(request):
@@ -26,27 +26,37 @@ def member_view(request, m_id):
 
 
 def member_add(request):
-
-    print request.GET.get('department')
-
     if request.method == 'POST':
         form = MemberForm(request.POST, request.FILES or {})
         address_formset = AddressFormSet(request.POST)
         roles_formset = RoleFormSet(request.POST)
+        reachability_formset = ReachabilityFormSet(request.POST)
+
         form.full_clean()
         if form.is_valid():
-            member = form.save()
+            member = form.save(commit=False)
             address_formset = AddressFormSet(request.POST, instance=member)
             roles_formset = RoleFormSet(request.POST, instance=member)
-            (f.full_clean() for f in (address_formset, roles_formset))
-            if address_formset.is_valid() and roles_formset.is_valid():
+            reachability_formset = ReachabilityFormSet(request.POST, instance=member)
+
+            formsets_valid = True
+            for formset in (address_formset, roles_formset, reachability_formset):
+                formset.full_clean()
+                if not formset.is_valid():
+                    formset.has_errors = True
+                    formsets_valid = False
+
+            if formsets_valid:
+                member.save()
                 address_formset.save()
                 roles_formset.save()
+                reachability_formset.save()
                 return HttpResponse('Saved', status=204)
     else:
         form = MemberForm()
         address_formset = AddressFormSet()
         roles_formset = RoleFormSet()
+        reachability_formset = ReachabilityFormSet()
 
     for formset in (address_formset, roles_formset):
         formset.has_errors = any(formset.errors + formset.non_form_errors())
@@ -55,6 +65,7 @@ def member_add(request):
         'form': form,
         'address_formset': address_formset,
         'roles_formset': roles_formset,
+        'reachability_formset': reachability_formset,
     })
 
 
@@ -64,26 +75,33 @@ def member_edit(request, m_id):
         form = MemberForm(request.POST, request.FILES or {}, instance=member)
         address_formset = AddressFormSet(request.POST, instance=member)
         roles_formset = RoleFormSet(request.POST, instance=member)
+        reachability_formset = ReachabilityFormSet(request.POST, instance=member)
 
-        (f.full_clean() for f in (form, address_formset, roles_formset))
-        if all(f.is_valid() for f in (form, address_formset, roles_formset)):
+        formsets_valid = True
+        for formset in (address_formset, roles_formset, reachability_formset):
+            formset.full_clean()
+            if not formset.is_valid():
+                formset.has_errors = True
+                formsets_valid = False
+
+        if form.is_valid() and formsets_valid:
             form.save()
             address_formset.save()
             roles_formset.save()
+            reachability_formset.save()
             return HttpResponse('Saved', status=204)
     else:
         form = MemberForm(instance=member)
         address_formset = AddressFormSet(instance=member)
         roles_formset = RoleFormSet(instance=member)
-
-    for formset in (address_formset, roles_formset):
-        formset.has_errors = any(formset.errors + formset.non_form_errors())
+        reachability_formset = ReachabilityFormSet(instance=member)
 
     return render(request, 'members/form.html', {
         'member': member,
         'form': form,
         'address_formset': address_formset,
         'roles_formset': roles_formset,
+        'reachability_formset': reachability_formset,
     })
 
 

@@ -4,7 +4,7 @@ from django.utils.timezone import now
 from rest_framework import viewsets, filters, serializers, routers
 
 from .departments.models import Department, DepartmentType
-from .members.models import Member, RoleType, Role
+from .members.models import Member, RoleType, Role, Reachability
 
 
 class MemberFilter(filters.BaseFilterBackend):
@@ -79,9 +79,14 @@ class RoleViewSet(viewsets.ModelViewSet):
     model = Role
 
 
+class ReachabilityViewSet(viewsets.ModelViewSet):
+    model = Reachability
+
+
 api = routers.DefaultRouter()
 api.register(r'departments', DepartmentViewSet)
 api.register(r'department_types', DepartmentTypeViewSet)
 api.register(r'members', MemberViewSet)
 api.register(r'role_types', RoleTypeViewSet)
 api.register(r'roles', RoleViewSet)
+api.register(r'reachabilities', ReachabilityViewSet)

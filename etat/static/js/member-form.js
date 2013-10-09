@@ -3,6 +3,7 @@ Etat.Views.MemberForm = Backbone.View.extend({
     events : {
         'click #add-address'        : 'addAddress',
         'click #add-role'           : 'addRole',
+        'click #add-reachability'   : 'addReachability',
         'change input[name$=main]'  : 'onlyOneAddress',
     },
 
@@ -16,6 +17,13 @@ Etat.Views.MemberForm = Backbone.View.extend({
     addRole: function(event) {
         $('a[href=#roles]').tab('show');
         $('#roles .extra').fadeIn();
+        $(event.target).prop('disabled', true);
+        return false;
+    },
+
+    addReachability: function(event) {
+        $('a[href=#reachability]').tab('show');
+        $('#reachability .extra').fadeIn();
         $(event.target).prop('disabled', true);
         return false;
     },

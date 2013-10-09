@@ -2,6 +2,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from django.forms.models import inlineformset_factory, BaseInlineFormSet
+from django.utils.encoding import force_text
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 
@@ -10,14 +12,14 @@ from mptt.fields import TreeNodeChoiceField
 from etat.departments.models import Department
 from etat.utils.widgets import ImageWidget
 
-from .models import Member, Address, Role
+import models
 
 
 class MemberForm(forms.ModelForm):
     portrait = forms.ImageField(widget=ImageWidget, required=False)
 
     class Meta:
-        model = Member
+        model = models.Member
         exclude = ('departments',)
         widgets = {
             'gender': forms.RadioSelect(
@@ -31,7 +33,7 @@ class RoleInlineForm(forms.ModelForm):
         level_indicator=mark_safe(u'&nbsp;&nbsp;'))
 
     class Meta:
-        model = Role
+        model = models.Role
         widgets = {
             'start': forms.DateInput(attrs={'class': 'date'}),
             'end': forms.DateInput(attrs={'class': 'date'}),
@@ -53,17 +55,58 @@ class OneRequiredFormset(BaseInlineFormSet):
                 raise ValidationError(msg)
 
 
+class ReachabilitySelect(forms.Select):
+
+    OPTION = '''<option value="{0}" class="{2}" {1}> {3} </option>'''
+
+    def render_option(self, selected_choices, option_value, option_label):
+            if option_value == None:
+                option_value = ''
+            option_value = force_text(option_value)
+            if option_value in selected_choices:
+                selected_html = mark_safe(' selected="selected"')
+                if not self.allow_multiple_selected:
+                    # Only allow for a single selection.
+                    selected_choices.remove(option_value)
+            else:
+                selected_html = ''
+
+
+            return mark_safe(self.OPTION.format(
+                   option_value,
+                   selected_html,
+                   models.Reachability.icons.get(option_value),
+                   force_text(option_label)
+            ))
+
+
+
+class ReachabilityForm(forms.ModelForm):
+    class Meta:
+        model = models.Reachability
+        widgets = {
+            'type': ReachabilitySelect
+        }
+
+
 AddressFormSet = inlineformset_factory(
-    Member,
-    Address,
+    models.Member,
+    models.Address,
     extra=1,
     formset=OneRequiredFormset
 )
 
 RoleFormSet = inlineformset_factory(
-    Member,
-    Role,
+    models.Member,
+    models.Role,
     extra=1,
     form=RoleInlineForm,
     formset=OneRequiredFormset
+)
+
+ReachabilityFormSet = inlineformset_factory(
+    models.Member,
+    models.Reachability,
+    form=ReachabilityForm,
+    extra=1
 )
