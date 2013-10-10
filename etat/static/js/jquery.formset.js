@@ -65,7 +65,7 @@
                         del = row.find('input:hidden[id $= "-DELETE"]'),
                         buttonRow = row.siblings("a." + options.addCssClass + ', .' + options.formCssClass + '-add'),
                         forms;
-                    if (del.length) {
+                    if (row.find('input[name$=id]').val() !== '') {
                         // We're dealing with an inline formset.
                         // Rather than remove this form from the DOM, we'll mark it as deleted
                         // and hide it, then let Django handle the deleting:
