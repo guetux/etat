@@ -27,14 +27,14 @@ def member_view(request, m_id):
 
 def member_add(request):
     if request.method == 'POST':
-        form = MemberForm(request.POST, request.FILES or {})
+        member_form = MemberForm(request.POST, request.FILES or {})
         address_formset = AddressFormSet(request.POST)
         roles_formset = RoleFormSet(request.POST)
         reachability_formset = ReachabilityFormSet(request.POST)
 
-        form.full_clean()
-        if form.is_valid():
-            member = form.save(commit=False)
+        member_form.full_clean()
+        if member_form.is_valid():
+            member = member_form.save(commit=False)
             address_formset = AddressFormSet(request.POST, instance=member)
             roles_formset = RoleFormSet(request.POST, instance=member)
             reachability_formset = ReachabilityFormSet(request.POST, instance=member)
@@ -53,7 +53,7 @@ def member_add(request):
                 reachability_formset.save()
                 return HttpResponse('Saved', status=204)
     else:
-        form = MemberForm()
+        member_form = MemberForm()
         address_formset = AddressFormSet()
         roles_formset = RoleFormSet()
         reachability_formset = ReachabilityFormSet()
@@ -62,7 +62,7 @@ def member_add(request):
         formset.has_errors = any(formset.errors + formset.non_form_errors())
 
     return render(request, 'members/form.html', {
-        'form': form,
+        'member_form': member_form,
         'address_formset': address_formset,
         'roles_formset': roles_formset,
         'reachability_formset': reachability_formset,
@@ -72,7 +72,7 @@ def member_add(request):
 def member_edit(request, m_id):
     member = get_object_or_404(Member, pk=m_id)
     if request.method == 'POST':
-        form = MemberForm(request.POST, request.FILES or {}, instance=member)
+        member_form = MemberForm(request.POST, request.FILES or {}, instance=member)
         address_formset = AddressFormSet(request.POST, instance=member)
         roles_formset = RoleFormSet(request.POST, instance=member)
         reachability_formset = ReachabilityFormSet(request.POST, instance=member)
@@ -84,21 +84,21 @@ def member_edit(request, m_id):
                 formset.has_errors = True
                 formsets_valid = False
 
-        if form.is_valid() and formsets_valid:
-            form.save()
+        if member_form.is_valid() and formsets_valid:
+            member_form.save()
             address_formset.save()
             roles_formset.save()
             reachability_formset.save()
             return HttpResponse('Saved', status=204)
     else:
-        form = MemberForm(instance=member)
+        member_form = MemberForm(instance=member)
         address_formset = AddressFormSet(instance=member)
         roles_formset = RoleFormSet(instance=member,)
         reachability_formset = ReachabilityFormSet(instance=member)
 
     return render(request, 'members/form.html', {
         'member': member,
-        'form': form,
+        'member_form': member_form,
         'address_formset': address_formset,
         'roles_formset': roles_formset,
         'reachability_formset': reachability_formset,

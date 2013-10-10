@@ -1,15 +1,6 @@
-{% load bootstrap %}
+{% load partials %}
 {% for form in formset %}
-    {% for field in form.hidden_fields %}
-        {{ field }}
-    {% endfor %}
-    <tr class="{% if form.non_field_errors %}danger{% endif %}">
-        {% for field in form.visible_fields %}
-            {% if not forloop.last %}
-                <td>{{ field|bootstrap_inline  }}</td>
-            {% else %}
-                <td>{{ form.DELETE }}</td>
-            {% endif %}
-        {% endfor %}
-    </tr>
+    {% formset_table_row form %}
+{% empty %}
+    {% formset_table_row formset.empty_form %}
 {% endfor %}

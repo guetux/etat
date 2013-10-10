@@ -39,6 +39,7 @@ class RoleInlineForm(forms.ModelForm):
             'end': forms.DateInput(attrs={'class': 'date'}),
         }
 
+
 class OneRequiredFormset(BaseInlineFormSet):
     def clean(self):
         super(OneRequiredFormset, self).clean()
@@ -78,7 +79,6 @@ class ReachabilitySelect(forms.Select):
                    models.Reachability.icons.get(option_value),
                    force_text(option_label)
             ))
-
 
 
 class ReachabilityForm(forms.ModelForm):

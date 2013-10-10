@@ -13,3 +13,7 @@ def formset_errors(formset):
 @register.inclusion_tag('partials/_formset_table_rows.html')
 def formset_table_rows(formset):
     return {'formset': formset}
+
+@register.inclusion_tag('partials/_formset_table_row.html')
+def formset_table_row(form):
+    return {'form': form}

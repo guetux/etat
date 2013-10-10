@@ -27,16 +27,16 @@
             <i class="icon-file-text"></i> {% trans "Notes" %}</a></li>
     </ul>
     <div class="tab-content member-tabs">
-        {% form_header form %}
+        {% form_header member_form %}
         <div class="tab-pane" id="person">
             <div class="row">
                 <div class="col-md-6">
-                    {{ form.scout_name|bootstrap }}
-                    {{ form.first_name|bootstrap }}
-                    {{ form.last_name|bootstrap }}
+                    {{ member_form.scout_name|bootstrap }}
+                    {{ member_form.first_name|bootstrap }}
+                    {{ member_form.last_name|bootstrap }}
                     <div class="form-group">
                         <label class="control-label">
-                            {{ form.gender.label }}
+                            {{ member_form.gender.label }}
                         </label>
                         <div class="btn-group full" data-toggle="buttons">
                             <label class="btn btn-default half">
@@ -51,10 +51,10 @@
                             </label>
                         </div>
                     </div>
-                    {{ form.birthday|bootstrap }}
+                    {{ member_form.birthday|bootstrap }}
                 </div>
                 <div class="col-md-6">
-                    {{ form.portrait|bootstrap }}
+                    {{ member_form.portrait|bootstrap }}
                 </div>
             </div>
         </div>
@@ -121,7 +121,9 @@
         {% if form.errors %}
             $('a[href=#person]').tab('show');
         {% elif address_formset.has_errors %}
-            $('a[href=#addresses]').tab('show');
+            $('a[href=#contact]').tab('show');
+        {% elif reachability_formset.has_errors %}
+            $('a[href=#contact]').tab('show');
         {% elif roles_formset.has_errors %}
             $('a[href=#roles]').tab('show');
         {% else %}
