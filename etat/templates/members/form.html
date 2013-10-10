@@ -50,6 +50,7 @@
                               Lady
                             </label>
                         </div>
+                        {{ member_form.gender.errors }}
                     </div>
                     {{ member_form.birthday|bootstrap }}
                 </div>
@@ -71,7 +72,11 @@
                 </tr>
                 {% formset_table_rows address_formset %}
             </table>
+            <table class="address form-template">
+                {% formset_table_row address_formset.empty_form %}
+            </table>
             {% formset_errors address_formset %}
+
 
 
             {{ reachability_formset.management_form }}
@@ -84,11 +89,14 @@
                 </tr>
                 {% formset_table_rows reachability_formset %}
             </table>
+            <table class="reachability form-template">
+                {% formset_table_row reachability_formset.empty_form %}
+            </table>
             {% formset_errors reachability_formset %}
         </div>
         <div class="tab-pane formset" id="roles">
             {{ roles_formset.management_form }}
-            <table class="table">
+            <table class="table roles">
                 <tr>
                     <th width="25%">{% trans "Department" %}</th>
                     <th width="25%">{% trans "Role" %}</th>
@@ -98,10 +106,13 @@
                 </tr>
                 {% formset_table_rows roles_formset %}
             </table>
+            <table class="role form-template">
+                {% formset_table_row roles_formset.empty_form %}
+            </table>
             {% formset_errors roles_formset %}
         </div>
         <div class="tab-pane" id="notes">
-            {{ form.notes|bootstrap }}
+            {{ member_form.notes|bootstrap }}
         </div>
     </div>
 </div>
@@ -130,7 +141,7 @@
             $('.member-tab-nav a:first').tab('show');
         {% endif %}
 
-        $('input[name=gender][value={{ form.gender.value }}]').click();
+        $('input[name=gender][value={{ member_form.gender.value }}]').click();
     });
 
     // Kick of Member Form View

@@ -1,6 +1,4 @@
 {% load partials %}
 {% for form in formset %}
     {% formset_table_row form %}
-{% empty %}
-    {% formset_table_row formset.empty_form %}
 {% endfor %}

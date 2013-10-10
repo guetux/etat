@@ -56,11 +56,7 @@
                     // Otherwise, just insert the remove button at the end of the row
                     var del_button = '<a class="' + options.deleteCssClass + '" href="javascript:void(0)">' + options.deleteText +'</a>';
 
-                    if (del.length === 1) {
-                        del.after(del_button);
-                    } else {
-                        row.append(del_button);
-                    }
+                    row.append(del_button);
 
 
                 }
@@ -122,10 +118,12 @@
             if (options.formTemplate) {
                 // If a form template was specified, we'll clone it to generate new form instances:
                 template = (options.formTemplate instanceof $) ? options.formTemplate : $(options.formTemplate);
+                template = template.clone(true);
                 template.removeAttr('id').addClass(options.formCssClass + ' formset-custom-template');
                 template.find(childElementSelector).each(function() {
                     updateElementIndex($(this), options.prefix, '__prefix__');
                 });
+                template.find('input:hidden[id $= "-DELETE"]').remove();
                 insertDeleteLink(template);
             } else {
                 // Otherwise, use the last form in the formset; this works much better if you've got

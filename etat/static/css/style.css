@@ -96,6 +96,10 @@ ul {
     border: none;
 }
 
+.form-template {
+    display: none;
+}
+
 .modal-footer.add #add-address,
 .modal-footer.add #add-role {
     display: none;

@@ -48,18 +48,21 @@ Etat.Views.MemberForm = Backbone.View.extend({
         $('.addresses tr').formset({
             prefix: 'addresses',
             formCssClass: 'addresses-formset',
+            formTemplate: $('.address.form-template tr'),
             added: this.initWidgets
         });
 
         $('.reachability tr').formset({
             prefix: 'reachabilities',
             formCssClass: 'reachability-formset',
+            formTemplate: $('.reach.form-template tr'),
             added: this.initWidgets
         });
 
-        $('#roles tr').formset({
+        $('.roles tr').formset({
             prefix: 'roles',
             formCssClass: 'roles-formset',
+            formTemplate: $('.role.form-template tr'),
             added: this.initWidgets
         });
 
