@@ -6,9 +6,6 @@ from django.utils.encoding import force_text
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext as _
 
-from mptt.fields import TreeNodeChoiceField
-
-from etat.departments.models import Department
 from etat.utils.widgets import ImageWidget
 
 import models
@@ -28,9 +25,6 @@ class MemberForm(forms.ModelForm):
 
 
 class RoleInlineForm(forms.ModelForm):
-    department = TreeNodeChoiceField(queryset=Department.objects.all(),
-        level_indicator=mark_safe(u'&nbsp;&nbsp;'))
-
     class Meta:
         model = models.Role
         widgets = {

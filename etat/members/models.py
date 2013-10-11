@@ -3,6 +3,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.timezone import now
 
+from mptt.fields import TreeForeignKey
 from django_countries import CountryField
 
 from sorl.thumbnail import ImageField
@@ -63,7 +64,7 @@ class RoleType(models.Model):
 
 class Role(models.Model):
     member = models.ForeignKey(Member, related_name='roles')
-    department = models.ForeignKey('departments.Department')
+    department = TreeForeignKey('departments.Department')
     type = models.ForeignKey(RoleType)
 
     start = models.DateField(_('start'))

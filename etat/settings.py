@@ -103,6 +103,7 @@ INSTALLED_APPS = (
     'django_reset',
     'django_countries',
     'django_filters',
+    'django_select2',
     'rest_framework',
     'bootstrapform',
     'sorl.thumbnail',
@@ -113,5 +114,10 @@ INSTALLED_APPS = (
 )
 
 SUIT_CONFIG = {
-    'ADMIN_NAME': 'Etat Admin'
+    'ADMIN_NAME': 'Etat Admin',
+    'SEARCH_URL': 'admin:members_member_changelist',
+    'MENU_ICONS': {
+        'departments': 'icon-folder-open',
+        'members': 'icon-user',
+    }
 }

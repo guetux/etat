@@ -13,7 +13,6 @@ class AddressAdminInline(admin.StackedInline):
 
 class RoleAdminInline(admin.TabularInline):
     model = models.Role
-    raw_id_fields = ('department', 'type')
     extra = 0
 
 
@@ -24,6 +23,7 @@ class ReachabilityAdminInline(admin.TabularInline):
 
 class MemberAdmin(AdminImageMixin, admin.ModelAdmin):
     list_display = ('scout_name', 'first_name', 'last_name')
+    search_fields = ('scout_name', 'first_name', 'last_name')
 
     inlines = [
         RoleAdminInline,
