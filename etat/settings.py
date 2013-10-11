@@ -99,6 +99,7 @@ INSTALLED_APPS = (
     'raven.contrib.django.raven_compat',
     'south',
     'mptt',
+    'django_mptt_admin',
     'django_reset',
     'django_countries',
     'django_filters',

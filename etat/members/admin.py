@@ -16,9 +16,11 @@ class RoleAdminInline(admin.TabularInline):
     raw_id_fields = ('department', 'type')
     extra = 0
 
+
 class ReachabilityAdminInline(admin.TabularInline):
     model = models.Reachability
     extra = 0
+
 
 class MemberAdmin(AdminImageMixin, admin.ModelAdmin):
     list_display = ('scout_name', 'first_name', 'last_name')
