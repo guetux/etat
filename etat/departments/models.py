@@ -20,25 +20,21 @@ class DepartmentType(models.Model):
 class Department(MPTTModel):
 
     name = models.CharField(_('name'), max_length=100)
+    parent = TreeForeignKey('self', null=True, blank=True,
+        related_name='children')
     type = models.ForeignKey(DepartmentType, blank=True, null=True)
+    default_role = models.ForeignKey('members.RoleType', null=True, blank=True,
+        verbose_name=_('default role'), related_name='+')
+
     notes = models.TextField(_('notes'), blank=True)
     website = models.URLField(_('website'), null=True, blank=True)
     logo = models.ImageField(_('logo'), upload_to='departments',
         null=True, blank=True)
 
-    default_role = models.ForeignKey('members.RoleType', null=True, blank=True,
-        verbose_name=_('default role'), related_name='+')
-
-    order = models.PositiveIntegerField()
-    parent = TreeForeignKey('self', null=True, blank=True,
-        related_name='children')
 
     class Meta:
         verbose_name = _('Department')
         verbose_name_plural = _('Departments')
-
-    class MPTTMeta:
-        order_insertion_by = ['order']
 
     def __unicode__(self):
         return self.name

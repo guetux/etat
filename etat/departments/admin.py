@@ -16,7 +16,6 @@ class DepartmentAdmin(DjangoMpttAdmin):
     list_display = ('name_indented',)
     search_fields = ('name',)
     list_filter = ('type',)
-    sortable = 'order'
 
     def name_indented(self, obj):
         indent = 10 * obj.level
