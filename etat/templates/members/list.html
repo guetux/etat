@@ -11,31 +11,7 @@
   <div id="sidebar" class="col-md-3">
     <div class="well well-small">
       <h3>{% trans "Departments" %}</h3>
-      <div id="department_tree" class="space scrollbox">
-        <ul>
-        {% recursetree departments %}
-          <li id="{{ node.id }}" data-default_role="{{ node.default_role.id }}">
-            <a href="?d={{ node.id }}">
-              <i class="icon-group"></i>
-              {{ node.name }}
-            </a>
-            {% if not node.is_leaf_node %}
-              <ul>
-                {{ children }}
-              </ul>
-            {% endif %}
-          </li>
-        {% endrecursetree %}
-        </ul>
-      </div>
-
-      <div class="clearfix space">
-          <span>{% trans "Deep selector" %}</span>
-          <div  id="checkselector"  class="make-switch switch-mini pull-right">
-            <input type="checkbox" />
-          </div>
-      </div>
-
+      <div id="department-tree" class="space scrollbox"></div>
       <h3>
           {% trans "Roles" %}
       </h3>

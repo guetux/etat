@@ -2,18 +2,15 @@ from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 
 from etat.utils.deletion import deletion_tree
-from etat.departments.models import Department
 
 from .models import Member, RoleType
 from .forms import MemberForm, AddressFormSet, RoleFormSet, ReachabilityFormSet
 
 
 def member_list(request):
-    departments = Department.objects.all()
     roles = RoleType.objects.all()
 
     return render(request, 'members/list.html', {
-        'departments': departments,
         'roles': roles,
     })
 

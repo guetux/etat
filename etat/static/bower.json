@@ -13,9 +13,7 @@
     "bootstrap": "~3.0.0",
     "jquery.cookie": "~1.4.0",
     "listjs": "~0.2.1",
-    "jstree-dist": "*",
     "jquery-form": "~3.37.0",
-    "bootstrap-switch": "*",
     "bootstrap-datepicker": "~1.2.0"
   },
   "resolutions": {

@@ -1,86 +1,109 @@
 
 // Global members list$
 
-// list.js table of all members
-var MemberList = new List('member-list', {
-            valueNames: ['first_name', 'last_name', 'scout_name']
-});
-
-// department tree compontent. This mainly eliminates the uglyness of jstree
-var Departments = {
-    tree : undefined, // reference to js tree
-
+// department tree compontent.
+var DepartmentTree = Backbone.View.extend({
     // Get a list of all selected departments
-    get_selected: function() {
-        ids = [];
-        _.each(Departments.tree.get_checked(null, true), function(e) {
-            ids.push(parseInt(e.id, 10));
-        });
 
-        // Use selection if no checkbox is set
-        if (ids.length === 0) {
-            _.each(Departments.tree.get_selected(), function(e) {
-                ids.push(parseInt(e.id, 10));
-            });
-        }
+    events: {
+        'tree.click'            : 'treeClick',
+    },
+
+    getSelectedIds: function() {
+        ids = [];
+        _.forEach(this.$el.tree('getSelectedNodes'), function(node) {
+            ids.push(node.id);
+        });
         return ids;
     },
 
-    // Enable or disable the checkbox selector
-    toggleDeepSelector: function () {
-        if ($('#checkselector').bootstrapSwitch('status')) {
-            Departments.tree.show_checkboxes();
+    keyStateChange: function(e) {
+        this.shiftKey = e.shiftKey;
+        this.ctrlKey = e.ctrlKey;
+    },
+
+    withAllSubNodes: function(action, node) {
+        this.$el.tree(action, node);
+        _.forEach(node.getData(), function(nodeData) {
+            var node = this.$el.tree('getNodeById', nodeData.id);
+            this.withAllSubNodes(action, node);
+        }, this);
+    },
+
+    treeClick: function(e) {
+        e.preventDefault();
+        var node = e.node;
+        if (document.shiftKey) {
+            this.shiftClick(node);
+        } else if (document.ctrlKey) {
+            this.ctrlClick(node);
         } else {
-            Departments.tree.uncheck_all();
-            Departments.tree.hide_checkboxes();
-            $('#department_tree').trigger('selection_changed');
+            this.normalClick(node);
+        }
+        this.$el.trigger('selection_changed');
+    },
+
+    normalClick: function(node) {
+        _.forEach(this.$el.tree('getSelectedNodes'), function(node) {
+            this.$el.tree('removeFromSelection', node);
+        }, this);
+        this.$el.tree('selectNode', node);
+    },
+
+    shiftClick: function(node) {
+        if (this.$el.tree('isNodeSelected', node)) {
+            this.$el.tree('removeFromSelection', node);
+        } else {
+            this.$el.tree('addToSelection', node);
+        }
+    },
+
+    ctrlClick: function(node) {
+        var withAllSubNodes = _.bind(this.withAllSubNodes, this);
+        if (this.$el.tree('isNodeSelected', node)) {
+            withAllSubNodes('removeFromSelection', node);
+        } else {
+            withAllSubNodes('addToSelection', node);
+            withAllSubNodes('openNode', node);
         }
     },
 
     initialize: function() {
-        function selection_changed() {
-            $('#department_tree').trigger('selection_changed');
-        }
-
-        $('#department_tree').jstree({
-            plugins: ["themes", "html_data", "ui", "cookies", "checkbox"],
-            themes: {
-                theme: 'apple',
-                dots: false,
-                icons: false,
-            },
-            core: {
-                animation: 200,
-            }
-        }).bind({
-            'select_node.jstree': selection_changed,
-            'deselect_node.jstree': selection_changed,
-            'check_node.jstree': selection_changed,
-            'uncheck_node.jstree': selection_changed,
-            'loaded.jstree': function() {
-                // keep reference
-                Departments.tree = $.jstree._reference('#department_tree');
-                Departments.tree.hide_checkboxes();
+        this.$el.tree({
+            dataUrl: '/api/departments',
+            autoOpen: 3,
+            saveState: true,
+            useContextMenu: false,
+            onCreateLi: function(node, $li) {
+                var data = node.getData();
+                $li.find('.jqtree-title').before('<i class="icon-group"></i> ');
             }
         });
-
-        $("#checkselector").on('switch-change', Departments.toggleDeepSelector);
     },
 
-};
-_.extend(Departments, Backbone.Events);
+});
 
 
 Etat.Views.MemberView = Backbone.View.extend({
 
     events: {
-        'selection_changed #department_tree' : "loadMembers",
+        'tree.init #department-tree'          : "loadMembers",
+        'selection_changed #department-tree'  : "loadMembers",
         "change #roles-filter"               : "loadMembers",
         "change .status-filter input"        : "loadMembers",
         "change .gender-filter"              : "filterByGender",
         "click .member-add"                  : "addMember",
         "click .member-detail"               : "showMember",
         "click .member-edit"                 : "editMember",
+    },
+
+    initialize: function() {
+        this.departmentTree = new DepartmentTree({el: $('#department-tree')});
+
+        // list.js table of all members
+        this.memberList = new List('member-list', {
+            valueNames: ['first_name', 'last_name', 'scout_name']
+        });
     },
 
     memberIdForEvent: function() {
@@ -109,9 +132,9 @@ Etat.Views.MemberView = Backbone.View.extend({
         var show_m = $('input[name=m]').prop('checked'),
             show_f = $('input[name=f]').prop('checked');
         if (!show_m && !show_f) {
-            MemberList.filter();
+            this.memberList.filter();
         } else {
-            MemberList.filter(function(member) {
+            this.memberList.filter(function(member) {
                 var gender = member.values().gender;
                 return gender == 'm' && show_m || gender == 'f' && show_f;
             });
@@ -121,7 +144,7 @@ Etat.Views.MemberView = Backbone.View.extend({
     // Get all active filters to reload member list
     collectFilters: function() {
         var filterArgs = {};
-        filterArgs['departments'] = Departments.get_selected();
+        filterArgs['departments'] = this.departmentTree.getSelectedIds();
 
         filterArgs['roles'] = $('#roles-filter').val();
 
@@ -142,50 +165,56 @@ Etat.Views.MemberView = Backbone.View.extend({
     loadMembers: function() {
         this.$el.find('input[type=search]').val('');
         var members = new Etat.Collections.Members();
+        var memberList = this.memberList;
 
         members.fetch({
             data: this.collectFilters(),
-            success: function(members) {
-                members = members.toJSON();
-                MemberList.clear();
-                if (members.length) {
-                    append_roles(members);
-                    MemberList.add(members);
-                    MemberList.search();
-                    MemberList.sort('id', { asc: true });
-                }
-            }
+            success: _.bind(this.updateMemberList, this),
         });
     },
+
+    updateMemberList: function(members) {
+        members = members.toJSON();
+        this.memberList.clear();
+        if (members.length) {
+            this.appendRoles(members);
+            this.memberList.add(members);
+            this.memberList.search();
+            this.memberList.sort('id', { asc: true });
+        }
+    },
+
+    appendRoles: function(members) {
+        var selected_departments = this.departmentTree.getSelectedIds();
+            show_active = $('input[name=active]').prop('checked');
+            show_inactive = $('input[name=inactive]').prop('checked');
+
+        _.each(members, function(m) {
+            roles = [];
+            _.each(m.roles, function(r) {
+                if (_.indexOf(selected_departments, r.department) != -1) {
+                    if (r.active && show_active || !r.active && show_inactive) {
+                        roles.push(r.type);
+                    }
+                }
+            });
+            m.roles_display = roles.join(', ');
+        });
+    }
 });
 
 
-
-// Attaches a list of all roles to every member
-function append_roles(members) {
-    var selected_departments = Departments.get_selected();
-        show_active = $('input[name=active]').prop('checked');
-        show_inactive = $('input[name=inactive]').prop('checked');
-
-    _.each(members, function(m) {
-        roles = [];
-        _.each(m.roles, function(r) {
-            if (_.indexOf(selected_departments, r.department) != -1) {
-                if (r.active && show_active || !r.active && show_inactive) {
-                    roles.push(r.type);
-                }
-            }
-        });
-        m.roles_display = roles.join(', ');
-    });
-}
-
 // Kick off things
 $(function () {
-    Departments.initialize();
     var memberView = new Etat.Views.MemberView({el:$('#member-view')});
 
     $('#ajax-modal').on('modal-saved', function() {
         memberView.loadMembers();
+    });
+
+    // monitor shift and ctrl keys
+    $(document).on('keydown keyup', function(e) {
+        document.shiftKey = e.shiftKey;
+        document.ctrlKey = e.ctrlKey;
     });
 });

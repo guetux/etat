@@ -1,92 +1,16 @@
-from django.db.models import Q
-from django.utils.timezone import now
+from rest_framework import routers
 
-from rest_framework import viewsets, filters, serializers, routers
-
-from .departments.models import Department, DepartmentType
-from .members.models import Member, RoleType, Role, Reachability
-
-
-class MemberFilter(filters.BaseFilterBackend):
-
-    def filter_queryset(self, request, queryset, view):
-        filter_args = []
-        departments = request.GET.getlist('departments[]')
-        roles = request.GET.getlist('roles[]')
-        status = request.GET.get('status')
-        gender = request.GET.get('gender')
-
-        if departments:
-            filter_args.append(Q(departments__id__in=departments))
-
-        if roles:
-            filter_args.append(Q(roles__type__id__in=roles))
-
-        if gender:
-            filter_args.append(Q(gender=gender))
-
-        if status == 'active':
-            filter_args.append(
-                Q(roles__end__isnull=True) |
-                Q(roles__end__gte=now())
-            )
-        elif status == 'inactive':
-            filter_args.append(Q(roles__end__lte=now()))
-        elif status == 'none':
-            return queryset.none()
-
-        return queryset.filter(*filter_args).distinct()
-
-
-class RoleInlineSerializer(serializers.ModelSerializer):
-    type = serializers.RelatedField(read_only=True)
-
-    class Meta:
-        model = Role
-        fields = ('department', 'type')
-
-    def to_native(self, obj):
-        data = super(RoleInlineSerializer, self).to_native(obj)
-        data['active'] = obj.active
-        return data
-
-
-class MemberSerializer(serializers.ModelSerializer):
-    roles = RoleInlineSerializer(many=True)
-
-    class Meta:
-        model = Member
-
-class DepartmentViewSet(viewsets.ModelViewSet):
-    model = Department
-
-
-class DepartmentTypeViewSet(viewsets.ModelViewSet):
-    model = DepartmentType
-
-
-class MemberViewSet(viewsets.ModelViewSet):
-    model = Member
-    filter_backends = (MemberFilter,)
-    serializer_class = MemberSerializer
-
-
-class RoleTypeViewSet(viewsets.ModelViewSet):
-    model = RoleType
-
-
-class RoleViewSet(viewsets.ModelViewSet):
-    model = Role
-
-
-class ReachabilityViewSet(viewsets.ModelViewSet):
-    model = Reachability
+from etat.departments import api as departments_api
+from etat.members import api as members_api
 
 
 api = routers.DefaultRouter()
-api.register(r'departments', DepartmentViewSet)
-api.register(r'department_types', DepartmentTypeViewSet)
-api.register(r'members', MemberViewSet)
-api.register(r'role_types', RoleTypeViewSet)
-api.register(r'roles', RoleViewSet)
-api.register(r'reachabilities', ReachabilityViewSet)
+
+api.register(r'departments', departments_api.DepartmentViewSet)
+api.register(r'department_types', departments_api.DepartmentTypeViewSet)
+
+api.register(r'members', members_api.MemberViewSet)
+api.register(r'role_types', members_api.RoleTypeViewSet)
+api.register(r'roles', members_api.RoleViewSet)
+api.register(r'addresses', members_api.AddressViewSet)
+api.register(r'reachabilities', members_api.ReachabilityViewSet)
