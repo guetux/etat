@@ -32,6 +32,13 @@ class RoleInlineForm(forms.ModelForm):
             'end': forms.DateInput(attrs={'class': 'date'}),
         }
 
+class EducationInlineForm(forms.ModelForm):
+    class Meta:
+        model = models.Education
+        widgets = {
+            'date': forms.DateInput(attrs={'class': 'date'}),
+        }
+
 
 class OneRequiredFormset(BaseInlineFormSet):
     def clean(self):
@@ -95,6 +102,13 @@ RoleFormSet = inlineformset_factory(
     extra=0,
     form=RoleInlineForm,
     formset=OneRequiredFormset
+)
+
+EducationFormSet = inlineformset_factory(
+    models.Member,
+    models.Education,
+    extra=0,
+    form=EducationInlineForm,
 )
 
 ReachabilityFormSet = inlineformset_factory(

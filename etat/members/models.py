@@ -154,3 +154,31 @@ class Reachability(models.Model):
 
     def icon_class(self):
         return self.icons.get(self.type, 'icon-envelope')
+
+
+class EducationType(models.Model):
+    title = models.CharField(_('title'), max_length=100)
+    order = models.PositiveIntegerField()
+
+    class Meta:
+        verbose_name = _('Education type')
+        verbose_name_plural = _('Education types')
+        ordering = ('order',)
+
+    def __unicode__(self):
+        return self.title
+
+
+class Education(models.Model):
+    member = models.ForeignKey(Member, related_name='educations')
+    type = models.ForeignKey(EducationType)
+
+    date = models.DateField(_('date'), null=True, blank=True)
+
+    class Meta:
+        verbose_name = _('Education')
+        verbose_name_plural = _('Educations')
+        unique_together = ('member', 'type')
+
+    def __unicode__(self):
+        return self.type.title

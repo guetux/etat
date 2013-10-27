@@ -16,6 +16,11 @@ class RoleAdminInline(admin.TabularInline):
     extra = 0
 
 
+class EducationAdminInline(admin.TabularInline):
+    model = models.Education
+    extra = 0
+
+
 class ReachabilityAdminInline(admin.TabularInline):
     model = models.Reachability
     extra = 0
@@ -27,6 +32,7 @@ class MemberAdmin(AdminImageMixin, admin.ModelAdmin):
 
     inlines = [
         RoleAdminInline,
+        EducationAdminInline,
         AddressAdminInline,
         ReachabilityAdminInline,
     ]
@@ -46,6 +52,11 @@ class MemberAdmin(AdminImageMixin, admin.ModelAdmin):
 class RoleTypeAdmin(SortableModelAdmin):
     sortable = 'order'
 
-admin.site.register(models.Member, MemberAdmin)
 
+class EducationTypeAdmin(SortableModelAdmin):
+    sortable = 'order'
+
+
+admin.site.register(models.Member, MemberAdmin)
 admin.site.register(models.RoleType, RoleTypeAdmin)
+admin.site.register(models.EducationType, EducationTypeAdmin)
