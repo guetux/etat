@@ -87,9 +87,10 @@ var DepartmentTree = Backbone.View.extend({
 Etat.Views.MemberView = Backbone.View.extend({
 
     events: {
-        'tree.init #department-tree'          : "loadMembers",
-        'selection_changed #department-tree'  : "loadMembers",
+        "tree.init #department-tree"         : "loadMembers",
+        "selection_changed #department-tree" : "loadMembers",
         "change #roles-filter"               : "loadMembers",
+        "change #education-filter"           : "loadMembers",
         "change .status-filter input"        : "loadMembers",
         "change .gender-filter"              : "filterByGender",
         "click .member-add"                  : "addMember",
@@ -147,6 +148,7 @@ Etat.Views.MemberView = Backbone.View.extend({
         filterArgs['departments'] = this.departmentTree.getSelectedIds();
 
         filterArgs['roles'] = $('#roles-filter').val();
+        filterArgs['education'] = $('#education-filter').val();
 
         var active = $('input[name=active]').prop('checked'),
             inactive = $('input[name=inactive]').prop('checked');

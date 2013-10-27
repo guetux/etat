@@ -3,16 +3,15 @@ from django.shortcuts import render, get_object_or_404
 
 from etat.utils.deletion import deletion_tree
 
-from .models import Member, RoleType
+from .models import Member, RoleType, EducationType
 from .forms import (MemberForm, AddressFormSet, RoleFormSet, EducationFormSet,
     ReachabilityFormSet)
 
 
 def member_list(request):
-    roles = RoleType.objects.all()
-
     return render(request, 'members/list.html', {
-        'roles': roles,
+        'roles': RoleType.objects.all(),
+        'educations': EducationType.objects.all(),
     })
 
 

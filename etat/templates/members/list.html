@@ -12,9 +12,8 @@
     <div class="well well-small">
       <h3>{% trans "Departments" %}</h3>
       <div id="department-tree" class="space scrollbox"></div>
-      <h3>
-          {% trans "Roles" %}
-      </h3>
+
+      <h3>{% trans "Roles" %}</h3>
       <select id="roles-filter" class="form-control" data-placeholder="{% trans 'All' %}" multiple>
         {% for role in roles %}
           <option value="{{ role.id }}">{{ role }}</option>
@@ -31,6 +30,13 @@
           {% trans "Inactive" %}
         </label>
       </div>
+      <div class="space"></div>
+      <h3>{% trans "Education" %}</h3>
+      <select id="education-filter" class="form-control" data-placeholder="{% trans 'All' %}" multiple>
+        {% for education in educations %}
+          <option value="{{ education.id }}">{{ education }}</option>
+        {% endfor %}
+      </select>
     </div>
   </div> <!-- sidebar -->
 

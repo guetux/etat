@@ -14,6 +14,7 @@ class MemberFilter(BaseFilterBackend):
         filter_args = []
         departments = request.GET.getlist('departments[]')
         roles = request.GET.getlist('roles[]')
+        education = request.GET.getlist('education[]')
         status = request.GET.get('status')
         gender = request.GET.get('gender')
 
@@ -22,6 +23,9 @@ class MemberFilter(BaseFilterBackend):
 
         if roles:
             filter_args.append(Q(roles__type__id__in=roles))
+
+        if education:
+            filter_args.append(Q(educations__type__id__in=education))
 
         if gender:
             filter_args.append(Q(gender=gender))
